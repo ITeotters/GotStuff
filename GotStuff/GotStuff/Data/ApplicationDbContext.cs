@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using GotStuff.Dtos;
 
 namespace GotStuff.Data
 {
@@ -9,5 +10,9 @@ namespace GotStuff.Data
             : base(options)
         {
         }
+
+        public DbSet<GotStuff.Models.Item> Item { get; set; }
+
+        public DbSet<GotStuff.Dtos.ItemDto> ItemDto { get; set; }
     }
 }
