@@ -31,5 +31,20 @@ namespace GotStuff.Services.Implementation
 
             return dtos;
         }
+
+
+        public void AddItem(ItemDto dto)
+        {
+            Item item = new Item();
+            item.Id = dto.Id;
+            item.Name = dto.Name;
+            item.Description = dto.Description;
+            item.AcquiredDate = dto.AcquiredDate;
+            item.ExpirationDate = dto.ExpirationDate;
+
+            service.Add(item);
+            service.SaveChanges();
+        }
+
     }
 }
