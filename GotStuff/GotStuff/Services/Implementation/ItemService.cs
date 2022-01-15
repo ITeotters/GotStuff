@@ -1,5 +1,6 @@
 ﻿using GotStuff.Data;
 using GotStuff.Dtos;
+using GotStuff.Models;
 
 namespace GotStuff.Services.Implementation
 {
@@ -14,8 +15,21 @@ namespace GotStuff.Services.Implementation
 
         public List<ItemDto> GetAllItems()
         {
-            List<ItemDto> items = new List<ItemDto>();
-            return items;
+            List<Item> items = service.Item.ToList();
+            List<ItemDto> dtos = new List<ItemDto>();
+            
+            foreach(Item item in items)
+            {
+                ItemDto dto = new ItemDto();
+                dto.Id = item.Id;
+                dto.Name = item.Name;
+                dto.Description = item.Description;
+                dto.AcquiredDate = item.AcquiredDate;
+                dto.ExpirationDate = item.ExpirationDate;
+                dtos.Add(dto);
+            }
+
+            return dtos;
         }
     }
 }

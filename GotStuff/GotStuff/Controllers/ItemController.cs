@@ -1,4 +1,5 @@
-﻿using GotStuff.Services;
+﻿using GotStuff.Dtos;
+using GotStuff.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GotStuff.Controllers
@@ -14,7 +15,7 @@ namespace GotStuff.Controllers
 
         public IActionResult Index()
         {
-            var items = itemService.GetAllItems();
+            List<ItemDto> items = itemService.GetAllItems();
             return View(items);
         }
     }

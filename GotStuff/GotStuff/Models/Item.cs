@@ -13,6 +13,15 @@
 
         }
 
+        public Item(int id, string name, string description, string acquiredDate, string expirationDate)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Description = description;
+            this.AcquiredDate = acquiredDate;
+            this.ExpirationDate = expirationDate;
+        }
+
         // TODO: Maybe have categories?
     }
 }
