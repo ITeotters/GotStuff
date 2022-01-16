@@ -19,11 +19,6 @@ namespace GotStuff.Controllers
             return View(items);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         public IActionResult Create([Bind("Id", "Name")] ItemDto dto)
         {
