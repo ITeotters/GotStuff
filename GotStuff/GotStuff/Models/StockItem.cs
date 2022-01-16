@@ -1,11 +1,11 @@
 ﻿namespace GotStuff.Models
 {
-    public class Item
+    public class StockItem
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public Item Item { get; set; }
 
-        public Item()
+        public StockItem()
         {
 
         }

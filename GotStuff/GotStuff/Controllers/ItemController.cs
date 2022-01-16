@@ -25,7 +25,7 @@ namespace GotStuff.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Id", "Name", "Description", "AcquiredDate", "ExpirationDate")] ItemDto dto)
+        public IActionResult Create([Bind("Id", "Name")] ItemDto dto)
         {
             if (ModelState.IsValid)
             {

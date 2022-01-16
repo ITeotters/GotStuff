@@ -23,9 +23,6 @@ namespace GotStuff.Services.Implementation
                 ItemDto dto = new ItemDto();
                 dto.Id = item.Id;
                 dto.Name = item.Name;
-                dto.Description = item.Description;
-                dto.AcquiredDate = item.AcquiredDate;
-                dto.ExpirationDate = item.ExpirationDate;
                 dtos.Add(dto);
             }
 
@@ -38,9 +35,6 @@ namespace GotStuff.Services.Implementation
             Item item = new Item();
             item.Id = dto.Id;
             item.Name = dto.Name;
-            item.Description = dto.Description;
-            item.AcquiredDate = dto.AcquiredDate;
-            item.ExpirationDate = dto.ExpirationDate;
 
             service.Add(item);
             service.SaveChanges();
