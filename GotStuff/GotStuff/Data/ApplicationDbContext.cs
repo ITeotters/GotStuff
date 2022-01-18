@@ -14,5 +14,7 @@ namespace GotStuff.Data
         public DbSet<GotStuff.Models.Item> Item { get; set; }
 
         public DbSet<GotStuff.Models.StockItem> StockItem { get; set; }
+
+        public DbSet<GotStuff.Dtos.ItemDto> ItemDto { get; set; }
     }
 }

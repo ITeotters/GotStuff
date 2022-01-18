@@ -16,8 +16,16 @@ namespace GotStuff.Controllers
         public IActionResult Index()
         {
             List<ItemDto> items = itemService.GetAllItems();
+            ModelState.Clear();
             return View(items);
         }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult Create([Bind("Id", "Name")] ItemDto dto)
@@ -28,7 +36,7 @@ namespace GotStuff.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(dto);
+            return View();
         }
     }
 }
