@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GotStuff.Dtos.StockItemDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>List of Stock items</h1>
+
+<div>
+    <a asp-action="Create" class="btn btn-primary">Add Stock</a>
+</div>
+
+<table class="table">
+    <thread>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemDto)
+            </th>
+        </tr>
+    </thread>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.ItemId)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.ItemDto)
+                </th>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index" asp-controller="Item">Back to List</a>
+</div>
+
