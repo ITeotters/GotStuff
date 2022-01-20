@@ -20,15 +20,27 @@ namespace GotStuff.Services.Implementation
             List<StockItemDto> dtos = new List<StockItemDto>();
             stocks = ConvertItemsInStockItems();
 
-            foreach(var stock in stocks)
+            foreach(StockItem stock in stocks)
             {
                 StockItemDto dto = new StockItemDto();
                 dto.ItemId = stock.ItemId;
                 dto.ItemName = stock.Item.Name;
                 dtos.Add(dto);
             }
+
+            List<StockItemDto> resultDtos = OrderByName(dtos);
            
-            return dtos;
+            return resultDtos;
+        }
+
+        
+        private List<StockItemDto> OrderByName(List<StockItemDto> dtos)
+        {
+            List<StockItemDto> resultDtos = dtos
+                .OrderBy(dto => dto.ItemName)
+                .ToList();
+
+            return resultDtos;
         }
 
 
@@ -37,7 +49,7 @@ namespace GotStuff.Services.Implementation
             List<Item> items = context.Item.ToList();
             stocks = new List<StockItem>();
 
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 StockItem stock = new StockItem();
                 stock.ItemId = item.Id;

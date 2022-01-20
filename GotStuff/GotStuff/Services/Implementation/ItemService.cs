@@ -13,6 +13,18 @@ namespace GotStuff.Services.Implementation
             this.service = dbService;
         }
 
+
+        private List<ItemDto> GetAllItemsOnce(List<ItemDto> dtos)
+        {
+            List<ItemDto> resultDtos = dtos
+                .GroupBy(item => item.Name)
+                .Select(dto => dto.First())
+                .ToList();
+
+            return resultDtos;
+        }
+
+
         public List<ItemDto> GetAllItems()
         {
             List<Item> items = service.Item.ToList();
@@ -26,7 +38,9 @@ namespace GotStuff.Services.Implementation
                 dtos.Add(dto);
             }
 
-            return dtos;
+            List<ItemDto> resultDtos = GetAllItemsOnce(dtos);
+
+            return resultDtos;
         }
 
 
