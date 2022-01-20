@@ -8,6 +8,6 @@ namespace GotStuff.Dtos
         public int ItemId { get; set; }
 
         [DisplayName("Item")]
-        public ItemDto ItemDto { get; set; }
+        public string ItemName { get; set; }
     }
 }

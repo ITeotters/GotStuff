@@ -16,7 +16,7 @@ namespace GotStuff.Controllers
 
         public IActionResult Index()
         {
-            List<StockItemDto> dtos = service.GetAllStocks();
+            var dtos = service.GetAllStocks();
             return View(dtos);
         }
     }
