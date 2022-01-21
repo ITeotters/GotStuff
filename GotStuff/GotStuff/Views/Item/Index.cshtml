@@ -8,15 +8,11 @@
 
 <div class="form-group">
     <a asp-action="Create" class="btn btn-primary">Add new item</a>
-    <a asp-action="Index" asp-controller="Stock" class="btn btn-primary">Add new Stock</a>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                 @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -25,9 +21,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

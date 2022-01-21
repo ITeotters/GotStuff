@@ -29,11 +29,11 @@ namespace GotStuff.Services.Implementation
             }
 
             List<StockItemDto> resultDtos = OrderByName(dtos);
-           
+;           
             return resultDtos;
         }
 
-        
+
         private List<StockItemDto> OrderByName(List<StockItemDto> dtos)
         {
             List<StockItemDto> resultDtos = dtos

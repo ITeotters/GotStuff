@@ -14,10 +14,10 @@
     <thread>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ItemId)
+                @Html.DisplayNameFor(model => model.ItemName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ItemName)
+                @Html.DisplayNameFor(model => model.Count)
             </th>
         </tr>
     </thread>
@@ -26,18 +26,13 @@
         {
             <tr>
                 <th>
-                    @Html.DisplayFor(modelItem => item.ItemId)
+                    @Html.DisplayFor(modelItem => item.ItemName)
                 </th>
                 <th>
-                    @Html.DisplayFor(modelItem => item.ItemName)
+                    @Html.DisplayFor(modelItem => item.Count)
                 </th>
             </tr>
 
         }
     </tbody>
 </table>
-
-<div>
-    <a asp-action="Index" asp-controller="Item">Back to List</a>
-</div>
-

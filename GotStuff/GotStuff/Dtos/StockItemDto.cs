@@ -4,10 +4,11 @@ namespace GotStuff.Dtos
 {
     public class StockItemDto
     {
-        [DisplayName("#")]
         public int ItemId { get; set; }
 
         [DisplayName("Item")]
         public string ItemName { get; set; }
+
+        public int Count { get; set; }
     }
 }
