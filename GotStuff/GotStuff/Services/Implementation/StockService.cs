@@ -28,19 +28,30 @@ namespace GotStuff.Services.Implementation
                 dtos.Add(dto);
             }
 
-            List<StockItemDto> resultDtos = OrderByName(dtos);
-;           
+            List<StockItemDto> resultDtos = OrganizeByName(dtos);
+
             return resultDtos;
         }
 
 
-        private List<StockItemDto> OrderByName(List<StockItemDto> dtos)
+        private List<StockItemDto> OrganizeByName(List<StockItemDto> listDtos)
         {
-            List<StockItemDto> resultDtos = dtos
-                .OrderBy(dto => dto.ItemName)
-                .ToList();
+            var groups = listDtos.GroupBy(dto => dto.ItemName)
+                         .Select(dto => new
+                         {
+                             Name = dto.Key,
+                             Count = dto.Count()
+                         })
+                         .OrderBy(dto => dto.Name);
 
-            return resultDtos;
+            List<StockItemDto> groupedStocks = new List<StockItemDto>();
+
+            foreach (var item in groups)
+            {
+                groupedStocks.Add(new StockItemDto(item.Name, item.Count));
+            }
+
+            return groupedStocks;
         }
 
 

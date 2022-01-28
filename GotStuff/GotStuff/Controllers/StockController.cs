@@ -17,7 +17,16 @@ namespace GotStuff.Controllers
         public IActionResult Index()
         {
             List<StockItemDto> dtos = service.GetAllStocks();
+
             return View(dtos);
+        }
+
+
+        public IActionResult AddStock()
+        {
+            StockItemDto dto = null;
+
+            return View(nameof(Index));
         }
     }
 }

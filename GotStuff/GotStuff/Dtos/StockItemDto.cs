@@ -10,5 +10,18 @@ namespace GotStuff.Dtos
         public string ItemName { get; set; }
 
         public int Count { get; set; }
+
+
+        public StockItemDto()
+        {
+
+        }
+
+
+        public StockItemDto(string name, int count)
+        {
+            this.ItemName = name;
+            this.Count = count;
+        }
     }
 }

@@ -6,10 +6,6 @@
 
 <h1>List of Stock items</h1>
 
-<div>
-    <a asp-action="Create" class="btn btn-primary">Add Stock</a>
-</div>
-
 <table class="table">
     <thread>
         <tr>
@@ -29,10 +25,21 @@
                     @Html.DisplayFor(modelItem => item.ItemName)
                 </th>
                 <th>
-                    @Html.DisplayFor(modelItem => item.Count)
+                   @Html.DisplayFor(modelItem => item.Count)
+@*                    @Html.DropDownListFor(modelItem => item.Count, GetNumberRange() )*@
+
                 </th>
             </tr>
 
         }
     </tbody>
 </table>
+@*
+@{
+    IEnumerable<SelectListItem> GetNumberRange()
+    {
+        return Enumerable.Range(0, 100).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }*@
+
+
+}
