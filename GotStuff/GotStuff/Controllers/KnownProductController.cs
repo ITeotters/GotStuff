@@ -4,20 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GotStuff.Controllers
 {
-    public class KnownProductsController: Controller
+    public class KnownProductController: Controller
     {
         private readonly IKnownProductsService knownProductsService;
 
-        public KnownProductsController(IKnownProductsService knownProductsService)
+        public KnownProductController(IKnownProductsService knownProductsService)
         {
             this.knownProductsService = knownProductsService;
         }
 
         public IActionResult Index()
         {
-            //List<KnownProductsListVm> items = itemService.GetAllKnownProducts();
-            ModelState.Clear();
-            return View();
+            List<KnownProductsListVm> knownProducts = knownProductsService.GetAllKnownProducts();
+            return View(knownProducts);
         }
 
 
@@ -28,11 +27,11 @@ namespace GotStuff.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Id", "Name")] KnownProductsListVm itemsVm)
+        public IActionResult Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductsListVm knownProductsVm)
         {
             if (ModelState.IsValid)
             {
-                //itemService.AddItem(itemsVm);
+                //knownProductsService.AddItem(knownProductsVm);
                 return RedirectToAction(nameof(Index));
             }
 

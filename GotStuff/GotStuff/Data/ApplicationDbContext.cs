@@ -11,7 +11,7 @@ namespace GotStuff.Data
         {
         }
 
-        public DbSet<GotStuff.Models.KnownProducts> KnownProducts { get; set; }
+        public DbSet<GotStuff.Models.KnownProduct> KnownProducts { get; set; }
 
         public DbSet<GotStuff.Models.Stock> Stock { get; set; }
     } 
