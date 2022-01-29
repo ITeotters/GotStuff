@@ -31,7 +31,7 @@ namespace GotStuff.Controllers
         {
             if (ModelState.IsValid)
             {
-                //knownProductsService.AddItem(knownProductsVm);
+                knownProductsService.AddNewProduct(knownProductsVm);
                 return RedirectToAction(nameof(Index));
             }
 

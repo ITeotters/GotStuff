@@ -19,7 +19,7 @@ namespace GotStuff.Services.Implementation
             List<KnownProductsListVm> knownProductsVm = new List<KnownProductsListVm>();
             List<KnownProduct> knownProducts = service.KnownProducts.ToList();
 
-            foreach(KnownProduct product in knownProducts)
+            foreach (KnownProduct product in knownProducts)
             {
                 KnownProductsListVm productsVm = new KnownProductsListVm();
                 productsVm.Id = product.Id;
@@ -29,6 +29,18 @@ namespace GotStuff.Services.Implementation
             }
 
             return knownProductsVm;
+        }
+
+
+        public void AddNewProduct(KnownProductsListVm newProduct)
+        {
+            KnownProduct productToAdd = new KnownProduct();
+            productToAdd.Id = newProduct.Id;
+            productToAdd.Name = newProduct.Name;
+            productToAdd.DefaultShelfLife = newProduct.DefaultShelfLife;
+            service.Add(productToAdd);
+            service.SaveChanges();
+
         }
     }
 }
