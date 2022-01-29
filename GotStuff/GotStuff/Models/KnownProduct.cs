@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime DefaultShelfLife { get; set; }
+        public int DefaultShelfLife { get; set; }
 
         public KnownProduct()
         {
