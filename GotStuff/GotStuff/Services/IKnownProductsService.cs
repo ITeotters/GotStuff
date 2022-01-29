@@ -2,7 +2,7 @@
 
 namespace GotStuff.Services
 {
-    public interface IStockService
+    public interface IKnownProductsService
     {
 
     }

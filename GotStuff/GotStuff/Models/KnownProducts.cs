@@ -1,11 +1,12 @@
 ﻿namespace GotStuff.Models
 {
-    public class Item
+    public class KnownProducts
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int DefaultShelfLife { get; set; } = 60;
 
-        public Item()
+        public KnownProducts()
         {
 
         }

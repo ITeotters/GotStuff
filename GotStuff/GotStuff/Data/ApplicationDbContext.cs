@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using GotStuff.Dtos;
+using GotStuff.ViewModels;
 
 namespace GotStuff.Data
 {
@@ -11,8 +11,8 @@ namespace GotStuff.Data
         {
         }
 
-        public DbSet<GotStuff.Models.Item> Item { get; set; }
+        public DbSet<GotStuff.Models.KnownProducts> KnownProducts { get; set; }
 
-        public DbSet<GotStuff.Models.StockItem> StockItem { get; set; }
+        public DbSet<GotStuff.Models.Stock> Stock { get; set; }
     } 
 }
