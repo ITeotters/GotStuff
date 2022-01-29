@@ -37,5 +37,33 @@ namespace GotStuff.Controllers
 
             return View();
         }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            KnownProductsListVm knownProduct = await knownProductsService.GetProductById(id);
+
+            if (knownProduct == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int? id)
+        //{
+        //    var riddle = await context.Riddle.FindAsync(id);
+        //    context.Riddle.Remove(riddle);
+        //    await context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+
     }
 }

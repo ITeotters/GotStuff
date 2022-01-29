@@ -6,18 +6,18 @@ namespace GotStuff.Services.Implementation
 {
     public class KnownProductsService : IKnownProductsService
     {
-        private readonly ApplicationDbContext service;
+        private readonly ApplicationDbContext dbContext;
 
-        public KnownProductsService(ApplicationDbContext dbService)
+        public KnownProductsService(ApplicationDbContext dbContext)
         {
-            this.service = dbService;
+            this.dbContext = dbContext;
         }
 
 
         public List<KnownProductsListVm> GetAllKnownProducts()
         {
             List<KnownProductsListVm> knownProductsVm = new List<KnownProductsListVm>();
-            List<KnownProduct> knownProducts = service.KnownProducts.ToList();
+            List<KnownProduct> knownProducts = dbContext.KnownProducts.ToList();
 
             foreach (KnownProduct product in knownProducts)
             {
@@ -38,9 +38,36 @@ namespace GotStuff.Services.Implementation
             productToAdd.Id = newProduct.Id;
             productToAdd.Name = newProduct.Name;
             productToAdd.DefaultShelfLife = newProduct.DefaultShelfLife;
-            service.Add(productToAdd);
-            service.SaveChanges();
+            dbContext.Add(productToAdd);
+            dbContext.SaveChanges();
+        }
 
+
+        public void RemoveProduct(KnownProductsListVm productToRemove)
+        {
+            KnownProduct knownProduct = new KnownProduct();
+            knownProduct.Id = productToRemove.Id;
+            knownProduct.Name = productToRemove.Name;
+            knownProduct.DefaultShelfLife = productToRemove.DefaultShelfLife;
+
+            dbContext.Remove(knownProduct);
+            dbContext.SaveChanges();
+        }
+
+
+       public async Task<KnownProductsListVm> GetProductById(int? id)
+        {
+            KnownProductsListVm knownProductVm = new KnownProductsListVm();
+            List<KnownProduct> knownProducts = dbContext.KnownProducts.ToList();
+
+            KnownProduct product =  dbContext.KnownProducts.FirstOrDefault( p => p.Id == id );
+            knownProductVm.Id = product.Id;
+            knownProductVm.Name = product.Name;
+            knownProductVm.DefaultShelfLife = product.DefaultShelfLife;
+
+            // TODO: FINISH THIS CUZ I DUNNO IF IT S FINISHED
+
+            return knownProductVm;
         }
     }
 }
