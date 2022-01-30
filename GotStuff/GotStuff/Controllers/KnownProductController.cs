@@ -62,5 +62,38 @@ namespace GotStuff.Controllers
             await knownProductsService.RemoveProduct(id);
             return RedirectToAction(nameof(Index));
         }
+
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            KnownProductVm product = await knownProductsService.GetProductVmById(id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+
+        public async Task<IActionResult> Edit([Bind("Id", "Name", "DefaultShelfLife")] KnownProductVm product, int? id)
+        {
+            product = await knownProductsService.GetProductVmById(id);
+            return View(product);
+        }
+
+
+        [HttpPost, ActionName("Edit")]
+        public async Task<IActionResult> EditSave([Bind("Id", "Name", "DefaultShelfLife")] KnownProductVm product)
+        {
+            await knownProductsService.EditProduct(product);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

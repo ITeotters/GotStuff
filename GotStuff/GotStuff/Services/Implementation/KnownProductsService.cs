@@ -78,5 +78,16 @@ namespace GotStuff.Services.Implementation
 
             return knownProductVm;
         }
+
+
+        public async Task EditProduct(KnownProductVm updatedProduct)
+        {
+            KnownProduct productToEdit = await GetProductById(updatedProduct.Id);
+            productToEdit.Id = updatedProduct.Id;
+            productToEdit.Name = updatedProduct.Name;
+            productToEdit.DefaultShelfLife = updatedProduct.DefaultShelfLife;
+
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace GotStuff.Services
         void AddNewProduct(KnownProductVm knownProductsVm);
         Task RemoveProduct(int id);
         Task<KnownProductVm> GetProductVmById(int? id);
+        Task EditProduct(KnownProductVm updatedProduct);
     }
 }
