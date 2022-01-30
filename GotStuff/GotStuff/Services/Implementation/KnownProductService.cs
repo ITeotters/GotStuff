@@ -33,14 +33,24 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public void AddNewProduct(KnownProductVm newProduct)
+        public async Task AddNewProduct(KnownProductVm newProduct)
         {
+            var existingNameProduct = await dbContext.KnownProduct
+                .Where(product => product.Name.Equals(newProduct.Name, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefaultAsync();
+
+            if(existingNameProduct != null)
+            {
+                throw new InvalidOperationException($"A product with name {newProduct.Name} already exists.");
+            }
+
             KnownProduct productToAdd = new KnownProduct();
             productToAdd.Id = newProduct.Id;
             productToAdd.Name = newProduct.Name;
             productToAdd.DefaultShelfLife = newProduct.DefaultShelfLife;
+
             dbContext.Add(productToAdd);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
 

@@ -27,11 +27,11 @@ namespace GotStuff.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductVm knownProductsVm)
+        public async Task<IActionResult> Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductVm knownProductVm)
         {
             if (ModelState.IsValid)
             {
-                knownProductsService.AddNewProduct(knownProductsVm);
+                await knownProductsService.AddNewProduct(knownProductVm);
                 return RedirectToAction(nameof(Index));
             }
 

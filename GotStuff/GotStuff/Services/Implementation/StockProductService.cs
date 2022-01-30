@@ -17,7 +17,7 @@ namespace GotStuff.Services.Implementation
 
         public async Task<List<StockProductVm>> GetOverviewOfStock()
         {           
-            var stockProducts = dbContext.StockProduct
+            var stockProducts = await dbContext.StockProduct
                 .GroupBy(stock => stock.KnownProductId)
                 .Select(group => new StockProductVm
                 {
@@ -25,9 +25,7 @@ namespace GotStuff.Services.Implementation
                     ProductId = group.Key,
                     Count = group.Count()
                 })
-                .ToList();
-
-
+                .ToListAsync();
 
             return stockProducts;
         }
