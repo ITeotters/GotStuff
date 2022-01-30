@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GotStuff.Services.Implementation
 {
-    public class KnownProductsService : IKnownProductsService
+    public class KnownProductService : IKnownProductService
     {
         private readonly ApplicationDbContext dbContext;
 
-        public KnownProductsService(ApplicationDbContext dbContext)
+        public KnownProductService(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -18,7 +18,7 @@ namespace GotStuff.Services.Implementation
         public List<KnownProductVm> GetAllKnownProducts()
         {
             List<KnownProductVm> knownProductsVm = new List<KnownProductVm>();
-            List<KnownProduct> knownProducts = dbContext.KnownProducts.ToList();
+            List<KnownProduct> knownProducts = dbContext.KnownProduct.ToList();
 
             foreach (KnownProduct product in knownProducts)
             {
@@ -58,7 +58,7 @@ namespace GotStuff.Services.Implementation
             KnownProduct knownProduct = null;
             try
             {
-                knownProduct = await dbContext.KnownProducts.FirstOrDefaultAsync(p => p.Id == id);
+                knownProduct = await dbContext.KnownProduct.FirstOrDefaultAsync(p => p.Id == id);
             } catch(Exception e)
             {
                 GC.KeepAlive(e);

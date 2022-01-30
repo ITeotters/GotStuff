@@ -1,6 +1,6 @@
 ﻿namespace GotStuff.Models
 {
-    public class Stock
+    public class StockProduct
     {
         public int Id { get; set; }
         public int KnownProductId { get; set; }
@@ -8,7 +8,7 @@
         public DateTime ExpirationDate { get; set; }
         public DateTime AcquiredDate { get; set; }
 
-        public Stock()
+        public StockProduct()
         {
 
         }

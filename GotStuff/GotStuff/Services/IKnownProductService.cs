@@ -2,7 +2,7 @@
 
 namespace GotStuff.Services
 {
-    public interface IKnownProductsService
+    public interface IKnownProductService
     {
         List<KnownProductVm> GetAllKnownProducts();
         void AddNewProduct(KnownProductVm knownProductsVm);

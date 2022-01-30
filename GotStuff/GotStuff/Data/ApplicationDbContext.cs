@@ -11,10 +11,8 @@ namespace GotStuff.Data
         {
         }
 
-        public DbSet<GotStuff.Models.KnownProduct> KnownProducts { get; set; }
+        public DbSet<GotStuff.Models.KnownProduct> KnownProduct { get; set; }
 
-        public DbSet<GotStuff.Models.Stock> Stock { get; set; }
-
-        public DbSet<GotStuff.ViewModels.KnownProductVm> KnownProductVm { get; set; }
+        public DbSet<GotStuff.Models.StockProduct> StockProduct { get; set; }
     } 
 }

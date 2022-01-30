@@ -6,9 +6,9 @@ namespace GotStuff.Controllers
 {
     public class KnownProductController : Controller
     {
-        private readonly IKnownProductsService knownProductsService;
+        private readonly IKnownProductService knownProductsService;
 
-        public KnownProductController(IKnownProductsService knownProductsService)
+        public KnownProductController(IKnownProductService knownProductsService)
         {
             this.knownProductsService = knownProductsService;
         }

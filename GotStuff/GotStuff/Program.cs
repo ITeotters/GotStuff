@@ -15,8 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IKnownProductsService, KnownProductsService>();
-builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<IKnownProductService, KnownProductService>();
+builder.Services.AddScoped<IStockProductService, StockProductService>();
 
 var app = builder.Build();
 
