@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GotStuff.Controllers
 {
-    public class KnownProductController: Controller
+    public class KnownProductController : Controller
     {
         private readonly IKnownProductsService knownProductsService;
 
@@ -15,7 +15,7 @@ namespace GotStuff.Controllers
 
         public IActionResult Index()
         {
-            List<KnownProductsListVm> knownProducts = knownProductsService.GetAllKnownProducts();
+            List<KnownProductVm> knownProducts = knownProductsService.GetAllKnownProducts();
             return View(knownProducts);
         }
 
@@ -27,7 +27,7 @@ namespace GotStuff.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductsListVm knownProductsVm)
+        public IActionResult Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductVm knownProductsVm)
         {
             if (ModelState.IsValid)
             {
@@ -46,24 +46,21 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            KnownProductsListVm knownProduct = await knownProductsService.GetProductById(id);
+            KnownProductVm knownProduct = await knownProductsService.GetProductVmById(id);
 
             if (knownProduct == null)
             {
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            return View(knownProduct);
         }
 
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int? id)
-        //{
-        //    var riddle = await context.Riddle.FindAsync(id);
-        //    context.Riddle.Remove(riddle);
-        //    await context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await knownProductsService.RemoveProduct(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

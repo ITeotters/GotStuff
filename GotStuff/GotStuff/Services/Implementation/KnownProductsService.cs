@@ -1,6 +1,7 @@
 ﻿using GotStuff.Data;
 using GotStuff.Models;
 using GotStuff.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace GotStuff.Services.Implementation
 {
@@ -14,14 +15,14 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public List<KnownProductsListVm> GetAllKnownProducts()
+        public List<KnownProductVm> GetAllKnownProducts()
         {
-            List<KnownProductsListVm> knownProductsVm = new List<KnownProductsListVm>();
+            List<KnownProductVm> knownProductsVm = new List<KnownProductVm>();
             List<KnownProduct> knownProducts = dbContext.KnownProducts.ToList();
 
             foreach (KnownProduct product in knownProducts)
             {
-                KnownProductsListVm productsVm = new KnownProductsListVm();
+                KnownProductVm productsVm = new KnownProductVm();
                 productsVm.Id = product.Id;
                 productsVm.Name = product.Name;
                 productsVm.DefaultShelfLife = product.DefaultShelfLife;
@@ -32,7 +33,7 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public void AddNewProduct(KnownProductsListVm newProduct)
+        public void AddNewProduct(KnownProductVm newProduct)
         {
             KnownProduct productToAdd = new KnownProduct();
             productToAdd.Id = newProduct.Id;
@@ -43,29 +44,37 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public void RemoveProduct(KnownProductsListVm productToRemove)
+        public async Task RemoveProduct(int id)
         {
-            KnownProduct knownProduct = new KnownProduct();
-            knownProduct.Id = productToRemove.Id;
-            knownProduct.Name = productToRemove.Name;
-            knownProduct.DefaultShelfLife = productToRemove.DefaultShelfLife;
+            KnownProduct productToRemove = await GetProductById(id);
 
-            dbContext.Remove(knownProduct);
-            dbContext.SaveChanges();
+            dbContext.Remove(productToRemove);
+            await dbContext.SaveChangesAsync();
         }
 
 
-       public async Task<KnownProductsListVm> GetProductById(int? id)
+        public async Task<KnownProduct> GetProductById(int? id)
         {
-            KnownProductsListVm knownProductVm = new KnownProductsListVm();
-            List<KnownProduct> knownProducts = dbContext.KnownProducts.ToList();
+            KnownProduct knownProduct = null;
+            try
+            {
+                knownProduct = await dbContext.KnownProducts.FirstOrDefaultAsync(p => p.Id == id);
+            } catch(Exception e)
+            {
+                GC.KeepAlive(e);
+            }
+            return knownProduct;
+        }
 
-            KnownProduct product =  dbContext.KnownProducts.FirstOrDefault( p => p.Id == id );
+
+        public async Task<KnownProductVm> GetProductVmById(int? id)
+        {
+            KnownProduct product = await GetProductById(id);
+            KnownProductVm knownProductVm = new KnownProductVm();
+
             knownProductVm.Id = product.Id;
             knownProductVm.Name = product.Name;
             knownProductVm.DefaultShelfLife = product.DefaultShelfLife;
-
-            // TODO: FINISH THIS CUZ I DUNNO IF IT S FINISHED
 
             return knownProductVm;
         }

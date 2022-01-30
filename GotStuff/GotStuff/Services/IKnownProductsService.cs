@@ -4,9 +4,9 @@ namespace GotStuff.Services
 {
     public interface IKnownProductsService
     {
-        List<KnownProductsListVm> GetAllKnownProducts();
-        void AddNewProduct(KnownProductsListVm knownProductsVm);
-        void RemoveProduct(KnownProductsListVm productToRemove);
-        Task<KnownProductsListVm> GetProductById(int? id);
+        List<KnownProductVm> GetAllKnownProducts();
+        void AddNewProduct(KnownProductVm knownProductsVm);
+        Task RemoveProduct(int id);
+        Task<KnownProductVm> GetProductVmById(int? id);
     }
 }

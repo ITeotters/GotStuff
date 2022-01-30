@@ -2,7 +2,7 @@
 
 namespace GotStuff.ViewModels
 {
-    public class KnownProductsListVm
+    public class KnownProductVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,7 @@ namespace GotStuff.ViewModels
         [DisplayName("Shelf Life")]
         public int DefaultShelfLife { get; set; }
 
-        public KnownProductsListVm()
+        public KnownProductVm()
         {
 
         }
