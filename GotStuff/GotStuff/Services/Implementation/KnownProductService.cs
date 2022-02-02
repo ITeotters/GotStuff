@@ -36,11 +36,12 @@ namespace GotStuff.Services.Implementation
         public async Task AddNewProduct(KnownProductVm newProduct)
         {
             var existingNameProduct = await dbContext.KnownProduct
-                .Where(product => product.Name.Equals(newProduct.Name, StringComparison.InvariantCultureIgnoreCase))
+                .Where(product => product.Name == newProduct.Name)
                 .FirstOrDefaultAsync();
 
+
             if(existingNameProduct != null)
-            {
+            {   
                 throw new InvalidOperationException($"A product with name {newProduct.Name} already exists.");
             }
 
