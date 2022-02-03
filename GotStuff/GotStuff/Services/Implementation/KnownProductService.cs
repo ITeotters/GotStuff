@@ -15,10 +15,10 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public List<KnownProductVm> GetAllKnownProducts()
+        public async Task<List<KnownProductVm>> GetAllKnownProducts()
         {
             List<KnownProductVm> knownProductsVm = new List<KnownProductVm>();
-            List<KnownProduct> knownProducts = dbContext.KnownProduct.ToList();
+            List<KnownProduct> knownProducts = await dbContext.KnownProduct.ToListAsync();
 
             foreach (KnownProduct product in knownProducts)
             {
@@ -33,17 +33,24 @@ namespace GotStuff.Services.Implementation
         }
 
 
+        public bool CheckIfProductExists(KnownProductVm newProduct)
+        {
+            var existingNameProduct = dbContext.KnownProduct
+                .Where(product => product.Name == newProduct.Name)
+                .FirstOrDefault();
+
+            bool isProductExisting = existingNameProduct != null;
+
+            return isProductExisting;
+        }
+
+
         public async Task AddNewProduct(KnownProductVm newProduct)
         {
-            var existingNameProduct = await dbContext.KnownProduct
-                .Where(product => product.Name == newProduct.Name)
-                .FirstOrDefaultAsync();
-
-
-            if(existingNameProduct != null)
-            {   
-                throw new InvalidOperationException($"A product with name {newProduct.Name} already exists.");
-            }
+            //if (existingNameProduct != null)
+            //{
+            //    throw new ArgumentException($"The product {existingNameProduct.Name} already exists.");
+            //}
 
             KnownProduct productToAdd = new KnownProduct();
             productToAdd.Id = newProduct.Id;

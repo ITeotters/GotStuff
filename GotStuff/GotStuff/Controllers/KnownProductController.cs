@@ -13,9 +13,9 @@ namespace GotStuff.Controllers
             this.knownProductsService = knownProductsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<KnownProductVm> knownProducts = knownProductsService.GetAllKnownProducts();
+            List<KnownProductVm> knownProducts = await knownProductsService.GetAllKnownProducts();
             return View(knownProducts);
         }
 
@@ -29,13 +29,18 @@ namespace GotStuff.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id", "Name, DefaultShelfLife")] KnownProductVm knownProductVm)
         {
-            if (ModelState.IsValid)
+            bool isProductExisting = knownProductsService.CheckIfProductExists(knownProductVm);
+
+            if (ModelState.IsValid && !isProductExisting)
             {
                 await knownProductsService.AddNewProduct(knownProductVm);
                 return RedirectToAction(nameof(Index));
             }
-
-            return View();
+            else
+            {
+                ViewBag.Message = "Exist";
+                return View();
+            }
         }
 
 

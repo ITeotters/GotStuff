@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace GotStuff.ViewModels
 {
     public class KnownProductVm
     {
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [DisplayName("Shelf Life")]

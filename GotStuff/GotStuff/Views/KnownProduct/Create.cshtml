@@ -21,7 +21,11 @@
                 <span asp-validation-for="DefaultShelfLife" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                @if (ViewBag.Message == "Exist")
+                {
+                    <br /><span style="color:red;">Name already exist.</span>
+                }
+                <br /><br /><input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
