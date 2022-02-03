@@ -1,19 +1,16 @@
-﻿@model IEnumerable<GotStuff.ViewModels.StockProductVm>
+﻿@model IEnumerable<GotStuff.ViewModels.StockDetailsVm>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Stock Products List</h1>
+<h1>Product Details</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Count)
             </th>
             <th></th>
         </tr>
@@ -22,10 +19,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <a href="" >@Html.DisplayFor(modelItem => item.Name)<a/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Count)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
         </tr>
 }

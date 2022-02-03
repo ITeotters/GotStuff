@@ -47,11 +47,6 @@ namespace GotStuff.Services.Implementation
 
         public async Task AddNewProduct(KnownProductVm newProduct)
         {
-            //if (existingNameProduct != null)
-            //{
-            //    throw new ArgumentException($"The product {existingNameProduct.Name} already exists.");
-            //}
-
             KnownProduct productToAdd = new KnownProduct();
             productToAdd.Id = newProduct.Id;
             productToAdd.Name = newProduct.Name;
