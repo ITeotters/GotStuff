@@ -15,22 +15,36 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<DetailedStockProductVm>> GetAllTheSameStocks(DetailedStockProductVm detailedProductVm)
+        public async Task<List<DetailedStockProductVm>> GetAllTheSameStocks(int? id)
         {
             List<DetailedStockProductVm> detailedVmList = new List<DetailedStockProductVm>();
 
-            var existingNameProduct = await dbContext.KnownProduct
-                .Where(product => product.Name == detailedProductVm.Name)
+
+            // This works but don t know why
+            var existingNameProduct = await dbContext.StockProduct
+                .Where(product => product.KnownProductId == id)
+                .Select(group => new DetailedStockProductVm
+                {
+                    Name = group.KnownProduct.Name,
+                    Id = group.KnownProductId,
+                    ExpirationDate = DateTime.UtcNow,
+                    AcquiredDate = DateTime.UtcNow
+                })
                 .ToListAsync();
 
-            foreach(var product in existingNameProduct)
-            {
-                DetailedStockProductVm vmProduct = new DetailedStockProductVm();
-                vmProduct.Id = product.Id;
-                vmProduct.Name = product.Name;
 
-                detailedVmList.Add(vmProduct);
-            }
+
+
+
+
+            //foreach (var product in existingNameProduct)
+            //{
+            //    DetailedStockProductVm vmProduct = new DetailedStockProductVm();
+            //    vmProduct.Id = product.KnownProductId;
+            //    vmProduct.Name = product.KnownProduct.Name;
+
+            //    detailedVmList.Add(vmProduct);
+            //}
 
             return detailedVmList;
         }

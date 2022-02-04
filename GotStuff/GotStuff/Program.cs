@@ -17,6 +17,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IKnownProductService, KnownProductService>();
 builder.Services.AddScoped<IStockProductService, StockProductService>();
+builder.Services.AddScoped<IDetailedStockProductService, DetailedStockProductService>();
 
 var app = builder.Build();
 

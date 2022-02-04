@@ -14,9 +14,14 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Index(DetailedStockProductVm detailedProductVm)
+        public async Task<IActionResult> Index(int? id)
         {
-            List<DetailedStockProductVm> detailedProducts = await detailedProductService.GetAllTheSameStocks(detailedProductVm);
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            List<DetailedStockProductVm> detailedProducts = await detailedProductService.GetAllTheSameStocks(id);
             return View(detailedProducts);
         }
     }
