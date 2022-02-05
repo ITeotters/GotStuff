@@ -4,6 +4,7 @@ namespace GotStuff.Services
 {
     public interface IDetailedStockProductService
     {
-        Task<List<DetailedStockProductVm>> GetAllTheSameStocks(int? id);
+        Task<List<DetailedStockProductVm>> GetAllStockByProductId(int? id);
+        Task<DetailedStockProductVm> FindStockProductById(int? id);
     }
 }

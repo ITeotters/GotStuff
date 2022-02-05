@@ -21,8 +21,38 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            List<DetailedStockProductVm> detailedProducts = await detailedProductService.GetAllTheSameStocks(id);
+            List<DetailedStockProductVm> detailedProducts = await detailedProductService.GetAllStockByProductId(id);
             return View(detailedProducts);
+        }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Id", "Name", "ExpirationDate", "AquiredDate")] DetailedStockProductVm stockProductVm)
+        {
+
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var stockProductVm = await detailedProductService.FindStockProductById(id);
+
+            return View(stockProductVm);
         }
     }
 }

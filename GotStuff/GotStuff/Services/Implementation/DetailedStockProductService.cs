@@ -15,38 +15,37 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<DetailedStockProductVm>> GetAllTheSameStocks(int? id)
+        public async Task<List<DetailedStockProductVm>> GetAllStockByProductId(int? id)
         {
-            List<DetailedStockProductVm> detailedVmList = new List<DetailedStockProductVm>();
-
-
-            // This works but don t know why
-            var existingNameProduct = await dbContext.StockProduct
+            var stockListQuery = dbContext.StockProduct
                 .Where(product => product.KnownProductId == id)
-                .Select(group => new DetailedStockProductVm
+                .Select(stockItem => new DetailedStockProductVm
                 {
-                    Name = group.KnownProduct.Name,
-                    Id = group.KnownProductId,
+                    Name = stockItem.KnownProduct.Name,
+                    Id = stockItem.Id,
+                    ProductId = stockItem.KnownProductId,
                     ExpirationDate = DateTime.UtcNow,
                     AcquiredDate = DateTime.UtcNow
-                })
-                .ToListAsync();
+                });
+
+            var stockList = await stockListQuery.ToListAsync();
+
+            return stockList;
+        }
 
 
+        public async Task<DetailedStockProductVm> FindStockProductById(int? id)
+        {
+            var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == id);
 
+            DetailedStockProductVm stockProductVm = new DetailedStockProductVm();
+            stockProductVm.Id = stockProduct.Id;
+            stockProductVm.ProductId = stockProduct.KnownProductId;
+            stockProductVm.Name = stockProduct.KnownProduct.Name;
+            stockProductVm.AcquiredDate = stockProduct.AcquiredDate;
+            stockProductVm.ExpirationDate = stockProduct.ExpirationDate;
 
-
-
-            //foreach (var product in existingNameProduct)
-            //{
-            //    DetailedStockProductVm vmProduct = new DetailedStockProductVm();
-            //    vmProduct.Id = product.KnownProductId;
-            //    vmProduct.Name = product.KnownProduct.Name;
-
-            //    detailedVmList.Add(vmProduct);
-            //}
-
-            return detailedVmList;
+            return stockProductVm;
         }
     }
 }
