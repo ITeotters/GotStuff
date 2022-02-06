@@ -6,11 +6,11 @@ namespace GotStuff.Controllers
 {
     public class DetailedStockProductController : Controller
     {
-        private readonly IDetailedStockProductService detailedProductService;
+        private readonly IStockProductService stockProductService;
 
-        public DetailedStockProductController(IDetailedStockProductService detailedProductService)
+        public DetailedStockProductController(IStockProductService stockProductService)
         {
-            this.detailedProductService = detailedProductService; 
+            this.stockProductService = stockProductService; 
         }
 
 
@@ -21,28 +21,20 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            List<DetailedStockProductVm> detailedProducts = await detailedProductService.GetAllStockByProductId(id);
-            return View(detailedProducts);
+            StockProductGroupVm stockProductsVm = await stockProductService.FindGroupByProductId(id);
+
+            return View(stockProductsVm);
         }
 
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
+            await stockProductService.AddNewProduct(id);
+
+            return RedirectToAction(nameof(Index), new { id = id});
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id", "Name", "ExpirationDate", "AquiredDate")] DetailedStockProductVm stockProductVm)
-        {
-
-
-
-
-            return RedirectToAction(nameof(Index));
-        }
-
-
+              
         public async Task<IActionResult> Details(int? id)
         {
             if(id == null)
@@ -50,7 +42,39 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            var stockProductVm = await detailedProductService.FindStockProductById(id);
+            var stockProductVm = await stockProductService.FindStockProductById(id);
+
+            return View(stockProductVm);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            DetailedStockProductVm deletedStockProduct = await stockProductService.DeleteStockProduct(id);
+
+            return RedirectToAction(nameof(Index), new { id = deletedStockProduct.ProductId });
+        }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var stockProductVm = await stockProductService.FindStockProductById(id);
+
+            if (stockProductVm == null)
+            {
+                return NotFound();
+            }
 
             return View(stockProductVm);
         }

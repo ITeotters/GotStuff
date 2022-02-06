@@ -1,15 +1,10 @@
 ﻿namespace GotStuff.ViewModels
 {
-    public class StockProductVm
+    public class StockProductGroupVm
     {
-        public int StockProductId { get; set; }
         public string Name { get; set; }
         public int ProductId { get; set; }
         public int Count { get; set; }
-
-        public StockProductVm()
-        {
-
-        }
+        public List<DetailedStockProductVm> StockProducts { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace GotStuff.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<StockProductVm> stockProductsVm = await stockProductService.GetOverviewOfStock();
+            List<StockProductGroupVm> stockProductsVm = await stockProductService.GetOverviewOfStock();
             return View(stockProductsVm);
         }
     }
