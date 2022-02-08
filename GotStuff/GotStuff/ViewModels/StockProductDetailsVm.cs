@@ -1,8 +1,8 @@
 ﻿namespace GotStuff.ViewModels
 {
-    public class DetailedStockProductVm
+    public class StockProductDetailsVm
     {
-        public int DetailedStockProductId { get; set; }
+        public int StockProductDetailesId { get; set; }
         public int ProductId { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }

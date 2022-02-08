@@ -22,10 +22,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <a asp-area="" asp-controller="DetailedStockProduct" asp-action="Index" asp-route-id="@item.ProductId">@Html.DisplayFor(modelItem => item.Name)</a>
+                <a asp-area="" asp-controller="StockProductDetails" asp-action="Index" asp-route-id="@item.ProductId">@Html.DisplayFor(modelItem => item.Name)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                <a asp-action="Create" asp-route-id="@item.ProductId"><input type="button" value="Add" class="btn btn-primary" /></a>
             </td>
         </tr>
 }

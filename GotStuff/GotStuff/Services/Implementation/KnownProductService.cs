@@ -23,7 +23,7 @@ namespace GotStuff.Services.Implementation
             foreach (KnownProduct product in knownProducts)
             {
                 KnownProductVm productsVm = new KnownProductVm();
-                productsVm.Id = product.Id;
+                productsVm.KnownProductId = product.Id;
                 productsVm.Name = product.Name;
                 productsVm.DefaultShelfLife = product.DefaultShelfLife;
                 knownProductsVm.Add(productsVm);
@@ -48,7 +48,7 @@ namespace GotStuff.Services.Implementation
         public async Task AddNewProduct(KnownProductVm newProduct)
         {
             KnownProduct productToAdd = new KnownProduct();
-            productToAdd.Id = newProduct.Id;
+            productToAdd.Id = newProduct.KnownProductId;
             productToAdd.Name = newProduct.Name;
             productToAdd.DefaultShelfLife = newProduct.DefaultShelfLife;
 
@@ -85,7 +85,7 @@ namespace GotStuff.Services.Implementation
             KnownProduct product = await GetProductById(id);
             KnownProductVm knownProductVm = new KnownProductVm();
 
-            knownProductVm.Id = product.Id;
+            knownProductVm.KnownProductId = product.Id;
             knownProductVm.Name = product.Name;
             knownProductVm.DefaultShelfLife = product.DefaultShelfLife;
 
@@ -95,8 +95,8 @@ namespace GotStuff.Services.Implementation
 
         public async Task EditProduct(KnownProductVm updatedProduct)
         {
-            KnownProduct productToEdit = await GetProductById(updatedProduct.Id);
-            productToEdit.Id = updatedProduct.Id;
+            KnownProduct productToEdit = await GetProductById(updatedProduct.KnownProductId);
+            productToEdit.Id = updatedProduct.KnownProductId;
             productToEdit.Name = updatedProduct.Name;
             productToEdit.DefaultShelfLife = updatedProduct.DefaultShelfLife;
 

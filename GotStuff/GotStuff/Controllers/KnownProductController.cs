@@ -87,7 +87,7 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Edit([Bind("Id", "Name", "DefaultShelfLife")] KnownProductVm product, int? id)
+        public async Task<IActionResult> Edit([Bind("KnownProductId", "Name", "DefaultShelfLife")] KnownProductVm product, int? id)
         {
             product = await knownProductsService.GetProductVmById(id);
             return View(product);
@@ -95,7 +95,7 @@ namespace GotStuff.Controllers
 
 
         [HttpPost, ActionName("Edit")]
-        public async Task<IActionResult> EditSave([Bind("Id", "Name", "DefaultShelfLife")] KnownProductVm product)
+        public async Task<IActionResult> EditSave([Bind("KnownProductId", "Name", "DefaultShelfLife")] KnownProductVm product)
         {
             await knownProductsService.EditProduct(product);
             return RedirectToAction(nameof(Index));

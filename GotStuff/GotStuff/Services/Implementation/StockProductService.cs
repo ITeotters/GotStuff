@@ -31,14 +31,14 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<DetailedStockProductVm>> GetAllStockByProductId(int? id)
+        public async Task<List<StockProductDetailsVm>> GetAllStockByProductId(int? id)
         {
             var stockListQuery = dbContext.StockProduct
                 .Where(product => product.KnownProductId == id)
-                .Select(stockItem => new DetailedStockProductVm
+                .Select(stockItem => new StockProductDetailsVm
                 {
                     Name = stockItem.KnownProduct.Name,
-                    DetailedStockProductId = stockItem.Id,
+                    StockProductDetailesId = stockItem.Id,
                     ProductId = stockItem.KnownProductId,
                     ExpirationDate = stockItem.ExpirationDate,
                     AcquiredDate = stockItem.AcquiredDate
@@ -50,34 +50,34 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<DetailedStockProductVm> FindStockProductById(int? id)
+        public async Task<StockProductDetailsVm> FindStockProductById(int? id)
         {
             var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == id);
 
-            DetailedStockProductVm stockProductVm = TurnStockProductToDetailedStockProductVm(stockProduct);
+            StockProductDetailsVm stockProductVm = ToVm(stockProduct);
 
             return stockProductVm;
         }
 
 
-        public async Task<DetailedStockProductVm> DeleteStockProduct(int? id)
+        public async Task<StockProductDetailsVm> DeleteStockProduct(int? id)
         {
             var stockProductToDelete = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == id);
 
             dbContext.Remove(stockProductToDelete);
             await dbContext.SaveChangesAsync();
 
-            DetailedStockProductVm stockProductVm = TurnStockProductToDetailedStockProductVm(stockProductToDelete);
+            StockProductDetailsVm stockProductVm = ToVm(stockProductToDelete);
 
             return stockProductVm;
 
         }
 
 
-        private DetailedStockProductVm TurnStockProductToDetailedStockProductVm(StockProduct stockProduct)
+        private StockProductDetailsVm ToVm(StockProduct stockProduct)
         {
-            DetailedStockProductVm stockProductVm = new DetailedStockProductVm();
-            stockProductVm.DetailedStockProductId = stockProduct.Id;
+            StockProductDetailsVm stockProductVm = new StockProductDetailsVm();
+            stockProductVm.StockProductDetailesId = stockProduct.Id;
             stockProductVm.ProductId = stockProduct.KnownProductId;
             stockProductVm.Name = stockProduct.KnownProduct.Name;
             stockProductVm.AcquiredDate = stockProduct.AcquiredDate;

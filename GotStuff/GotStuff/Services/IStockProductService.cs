@@ -6,9 +6,9 @@ namespace GotStuff.Services
     {
         Task<List<StockProductGroupVm>> GetOverviewOfStock();
         Task<StockProductGroupVm> FindGroupByProductId(int? id);
-        Task<List<DetailedStockProductVm>> GetAllStockByProductId(int? id);
-        Task<DetailedStockProductVm> FindStockProductById(int? id);
-        Task<DetailedStockProductVm> DeleteStockProduct(int? id);
+        Task<List<StockProductDetailsVm>> GetAllStockByProductId(int? id);
+        Task<StockProductDetailsVm> FindStockProductById(int? id);
+        Task<StockProductDetailsVm> DeleteStockProduct(int? id);
         Task AddNewProduct(int id);
     }
 }

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GotStuff.Controllers
 {
-    public class DetailedStockProductController : Controller
+    public class StockProductDetailsController : Controller
     {
         private readonly IStockProductService stockProductService;
 
-        public DetailedStockProductController(IStockProductService stockProductService)
+        public StockProductDetailsController(IStockProductService stockProductService)
         {
             this.stockProductService = stockProductService; 
         }
@@ -56,7 +56,7 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            DetailedStockProductVm deletedStockProduct = await stockProductService.DeleteStockProduct(id);
+            StockProductDetailsVm deletedStockProduct = await stockProductService.DeleteStockProduct(id);
 
             return RedirectToAction(nameof(Index), new { id = deletedStockProduct.ProductId });
         }

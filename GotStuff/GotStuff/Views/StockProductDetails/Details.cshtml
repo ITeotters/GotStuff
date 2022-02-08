@@ -1,14 +1,13 @@
-﻿@model GotStuff.ViewModels.DetailedStockProductVm
+﻿@model GotStuff.ViewModels.StockProductDetailsVm
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Delete</h1>
+<h1>Details</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>DetailedStockProductVm</h4>
+    <h4>Stock Product Details</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -30,10 +29,8 @@
             @Html.DisplayFor(model => model.AcquiredDate)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="DetailedStockProductId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" asp-route-id="@Model?.ProductId">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.StockProductDetailesId">Edit</a> |
+    <a asp-action="Index" asp-route-id="@Model?.ProductId">Back to List</a>
 </div>

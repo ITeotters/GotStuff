@@ -20,5 +20,13 @@ namespace GotStuff.Controllers
             List<StockProductGroupVm> stockProductsVm = await stockProductService.GetOverviewOfStock();
             return View(stockProductsVm);
         }
+
+
+        public async Task<IActionResult> Create(int id)
+        {
+            await stockProductService.AddNewProduct(id);
+
+            return RedirectToAction(nameof(Index), new { id = id });
+        }
     }
 }

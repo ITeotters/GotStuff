@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Product Details</h1>
+<h1>Stock Product Details</h1>
 
 <div class="form-group">
     <a asp-action="Create" asp-route-id="@Model.ProductId"><input type="button" value="Add New" class="btn btn-primary" /></a>
@@ -39,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.ExpirationDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DetailedStockProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DetailedStockProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DetailedStockProductId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.StockProductDetailesId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.StockProductDetailesId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.StockProductDetailesId">Delete</a>
             </td>
         </tr>
 }

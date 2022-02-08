@@ -5,7 +5,7 @@ namespace GotStuff.ViewModels
 {
     public class KnownProductVm
     {
-        public int Id { get; set; }
+        public int KnownProductId { get; set; }
 
         [Required]
         public string Name { get; set; }
