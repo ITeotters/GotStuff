@@ -15,19 +15,32 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<StockProductGroupVm>> GetOverviewOfStock()
+        public async Task<List<StockProductGroupVm>> GetStockOverviewIncludingZeroCount()
         {
-            var stockProducts = await dbContext.StockProduct
-                .GroupBy(stock => stock.KnownProductId)
-                .Select(group => new StockProductGroupVm
-                {
-                    Name = group.FirstOrDefault().KnownProduct.Name,
-                    ProductId = group.Key,
-                    Count = group.Count()
-                })
-                .ToListAsync();
+            List<StockProductGroupVm> stockGroupList = new List<StockProductGroupVm>();
+            var knownProducts = await dbContext.KnownProduct.ToListAsync();
 
-            return stockProducts;
+            foreach(KnownProduct product in knownProducts)
+            {
+                StockProductGroupVm stockGroupVm = new StockProductGroupVm();
+                stockGroupVm.Name = product.Name;
+                stockGroupVm.ProductId = product.Id;
+                stockGroupVm.Count = await GetStockCountForProduct(product.Id);
+
+                stockGroupList.Add(stockGroupVm);
+            }
+
+            return stockGroupList;
+        }
+
+
+        private async Task<int> GetStockCountForProduct(int productId)
+        {
+            var retVal = await dbContext.StockProduct
+                .Where(sp => sp.KnownProductId == productId)
+                .CountAsync();
+
+            return retVal;
         }
 
 
