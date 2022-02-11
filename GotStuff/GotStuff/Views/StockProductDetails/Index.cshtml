@@ -41,7 +41,30 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.StockProductDetailsId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.StockProductDetailsId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StockProductDetailsId">Delete</a>
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalForDelete_@item.StockProductDetailsId">Delete</button>
+                     
+                <div class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static" id="modalForDelete_@item.StockProductDetailsId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          Are you sure you want to delete this stock product?
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <form asp-action="Delete" asp-route-id="@item.StockProductDetailsId">
+                                <input type="hidden" asp-for="@item.StockProductDetailsId" />
+                                <input type="submit" value="Delete" class="btn btn-primary" />
+                            </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </td>
         </tr>
 }
@@ -51,3 +74,7 @@
 <div>
     <a asp-action="Index" asp-controller="StockProduct">Back to List</a>
 </div>
+
+@section Scripts{
+    <script src="~/js/site.js"></script>
+}

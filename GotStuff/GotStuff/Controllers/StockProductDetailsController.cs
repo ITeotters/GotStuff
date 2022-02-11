@@ -63,8 +63,7 @@ namespace GotStuff.Controllers
         }
 
 
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if(id == null)
             {
@@ -75,23 +74,6 @@ namespace GotStuff.Controllers
 
             return RedirectToAction(nameof(Index), new { id = deletedStockProduct.ProductId });
         }
-
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-
-            var stockProductVm = await stockProductService.FindStockProductVmById(id);
-
-            if (stockProductVm == null)
-            {
-                return NotFound();
-            }
-
-            return View(stockProductVm);
-        }
     }
 }
+ 

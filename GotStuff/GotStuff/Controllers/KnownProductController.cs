@@ -97,8 +97,18 @@ namespace GotStuff.Controllers
         [HttpPost, ActionName("Edit")]
         public async Task<IActionResult> EditSave([Bind("KnownProductId", "Name", "DefaultShelfLife")] KnownProductVm product)
         {
-            await knownProductsService.EditProduct(product);
-            return RedirectToAction(nameof(Index));
+            bool isProductExisting = knownProductsService.CheckIfProductExists(product);
+
+            if (ModelState.IsValid && !isProductExisting)
+            {
+                await knownProductsService.EditProduct(product);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Message = "Exist";
+                return View();
+            }
         }
     }
 }
