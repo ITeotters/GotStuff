@@ -27,6 +27,21 @@ namespace GotStuff.Controllers
         }
 
 
+        public async Task<IActionResult> Edit([Bind ("Name", "AquiredDate", "ExpirationDate")] StockProductDetailsVm stockVm, int? id)
+        {
+            stockVm = await stockProductService.FindStockProductVmById(id);
+            return View(stockVm);
+        }
+
+
+        [HttpPost, ActionName("Edit")]
+        public async Task<IActionResult> EditConfirmed([Bind ("Name", "ProductId", "StockProductDetailsId", "AcquiredDate", "ExpirationDate")] StockProductDetailsVm stockVm)
+        {
+            await stockProductService.EditStockProduct(stockVm);
+            return RedirectToAction(nameof(Index), new { id = stockVm.ProductId });
+        }
+
+
         public async Task<IActionResult> Create(int id)
         {
             await stockProductService.AddNewProduct(id);
@@ -42,7 +57,7 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            var stockProductVm = await stockProductService.FindStockProductById(id);
+            var stockProductVm = await stockProductService.FindStockProductVmById(id);
 
             return View(stockProductVm);
         }
@@ -69,7 +84,7 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            var stockProductVm = await stockProductService.FindStockProductById(id);
+            var stockProductVm = await stockProductService.FindStockProductVmById(id);
 
             if (stockProductVm == null)
             {

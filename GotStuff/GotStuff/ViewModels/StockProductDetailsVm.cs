@@ -2,7 +2,7 @@
 {
     public class StockProductDetailsVm
     {
-        public int StockProductDetailesId { get; set; }
+        public int StockProductDetailsId { get; set; }
         public int ProductId { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }

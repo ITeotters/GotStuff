@@ -51,7 +51,7 @@ namespace GotStuff.Services.Implementation
                 .Select(stockItem => new StockProductDetailsVm
                 {
                     Name = stockItem.KnownProduct.Name,
-                    StockProductDetailesId = stockItem.Id,
+                    StockProductDetailsId = stockItem.Id,
                     ProductId = stockItem.KnownProductId,
                     ExpirationDate = stockItem.ExpirationDate,
                     AcquiredDate = stockItem.AcquiredDate
@@ -63,7 +63,7 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<StockProductDetailsVm> FindStockProductById(int? id)
+        public async Task<StockProductDetailsVm> FindStockProductVmById(int? id)
         {
             var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == id);
 
@@ -90,7 +90,7 @@ namespace GotStuff.Services.Implementation
         private StockProductDetailsVm ToVm(StockProduct stockProduct)
         {
             StockProductDetailsVm stockProductVm = new StockProductDetailsVm();
-            stockProductVm.StockProductDetailesId = stockProduct.Id;
+            stockProductVm.StockProductDetailsId = stockProduct.Id;
             stockProductVm.ProductId = stockProduct.KnownProductId;
             stockProductVm.Name = stockProduct.KnownProduct.Name;
             stockProductVm.AcquiredDate = stockProduct.AcquiredDate;
@@ -127,6 +127,27 @@ namespace GotStuff.Services.Implementation
             retVal.Count = retVal.StockProducts.Count;
 
             return retVal;
+        }
+
+
+        private async Task<StockProduct> GetStockProductById(int id)
+        {
+            StockProduct retVal = await dbContext.StockProduct
+                .Where(sp => sp.KnownProductId == id)
+                .FirstOrDefaultAsync();
+
+            return retVal; 
+        }
+
+
+        public async Task EditStockProduct(StockProductDetailsVm stockProductVmToEdit)
+        {
+            StockProduct stockProduct = await GetStockProductById(stockProductVmToEdit.ProductId);
+            stockProduct.KnownProductId = stockProductVmToEdit.ProductId;
+            stockProduct.AcquiredDate = stockProductVmToEdit.AcquiredDate;
+            stockProduct.ExpirationDate = stockProductVmToEdit.ExpirationDate;
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }
