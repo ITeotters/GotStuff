@@ -104,11 +104,13 @@ namespace GotStuff.Services.Implementation
         {
             StockProduct stockProduct = new StockProduct();
             KnownProduct knownProduct = await dbContext.KnownProduct.Where(kp => kp.Id == knownProductId).FirstOrDefaultAsync();
+
             TimeSpan shelfLife = TimeSpan.FromDays(knownProduct.DefaultShelfLife);
 
             stockProduct.KnownProductId = knownProductId;
             stockProduct.AcquiredDate = DateTime.Now;
             stockProduct.ExpirationDate = stockProduct.AcquiredDate + shelfLife;
+            stockProduct.PantryId = 1;
             
             dbContext.StockProduct.Add(stockProduct);
             await dbContext.SaveChangesAsync();

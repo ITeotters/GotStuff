@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GotStuff.Data.Migrations
+namespace GotStuff.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220211174515_AddPantry")]
-    partial class AddPantry
+    [Migration("20220212153338_InitialBuild")]
+    partial class InitialBuild
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,12 +54,7 @@ namespace GotStuff.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Pantry");
                 });
@@ -81,9 +76,14 @@ namespace GotStuff.Data.Migrations
                     b.Property<int>("KnownProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PantryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("KnownProductId");
+
+                    b.HasIndex("PantryId");
 
                     b.ToTable("StockProduct");
                 });
@@ -290,15 +290,6 @@ namespace GotStuff.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GotStuff.Models.Pantry", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GotStuff.Models.StockProduct", b =>
                 {
                     b.HasOne("GotStuff.Models.KnownProduct", "KnownProduct")
@@ -307,7 +298,15 @@ namespace GotStuff.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GotStuff.Models.Pantry", "Pantry")
+                        .WithMany()
+                        .HasForeignKey("PantryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("KnownProduct");
+
+                    b.Navigation("Pantry");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

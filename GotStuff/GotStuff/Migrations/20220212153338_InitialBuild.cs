@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GotStuff.Data.Migrations
+namespace GotStuff.Migrations
 {
-    public partial class InitialIdentityModelv1 : Migration
+    public partial class InitialBuild : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,7 @@ namespace GotStuff.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KnownProducts",
+                name: "KnownProduct",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -59,7 +59,20 @@ namespace GotStuff.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownProducts", x => x.Id);
+                    table.PrimaryKey("PK_KnownProduct", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pantry",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pantry", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,22 +182,29 @@ namespace GotStuff.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stock",
+                name: "StockProduct",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     KnownProductId = table.Column<int>(type: "int", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PantryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stock", x => x.Id);
+                    table.PrimaryKey("PK_StockProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stock_KnownProducts_KnownProductId",
+                        name: "FK_StockProduct_KnownProduct_KnownProductId",
                         column: x => x.KnownProductId,
-                        principalTable: "KnownProducts",
+                        principalTable: "KnownProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StockProduct_Pantry_PantryId",
+                        column: x => x.PantryId,
+                        principalTable: "Pantry",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -229,9 +249,14 @@ namespace GotStuff.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stock_KnownProductId",
-                table: "Stock",
+                name: "IX_StockProduct_KnownProductId",
+                table: "StockProduct",
                 column: "KnownProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockProduct_PantryId",
+                table: "StockProduct",
+                column: "PantryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -252,7 +277,7 @@ namespace GotStuff.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Stock");
+                name: "StockProduct");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -261,7 +286,10 @@ namespace GotStuff.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "KnownProducts");
+                name: "KnownProduct");
+
+            migrationBuilder.DropTable(
+                name: "Pantry");
         }
     }
 }

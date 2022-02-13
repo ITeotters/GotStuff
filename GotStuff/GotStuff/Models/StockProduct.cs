@@ -7,6 +7,8 @@
         public KnownProduct KnownProduct { get; set; }
         public DateTime ExpirationDate { get; set; }
         public DateTime AcquiredDate { get; set; }
+        public int PantryId { get; set; }
+        public Pantry Pantry { get; set; }
 
         public StockProduct()
         {

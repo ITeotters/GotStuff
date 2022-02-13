@@ -4,18 +4,16 @@ using GotStuff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GotStuff.Data.Migrations
+namespace GotStuff.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220204130049_Changed Windows machine")]
-    partial class ChangedWindowsmachine
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,6 +41,22 @@ namespace GotStuff.Data.Migrations
                     b.ToTable("KnownProduct");
                 });
 
+            modelBuilder.Entity("GotStuff.Models.Pantry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pantry");
+                });
+
             modelBuilder.Entity("GotStuff.Models.StockProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -60,9 +74,14 @@ namespace GotStuff.Data.Migrations
                     b.Property<int>("KnownProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PantryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("KnownProductId");
+
+                    b.HasIndex("PantryId");
 
                     b.ToTable("StockProduct");
                 });
@@ -277,7 +296,15 @@ namespace GotStuff.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GotStuff.Models.Pantry", "Pantry")
+                        .WithMany()
+                        .HasForeignKey("PantryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("KnownProduct");
+
+                    b.Navigation("Pantry");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
