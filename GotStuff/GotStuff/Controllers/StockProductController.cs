@@ -15,7 +15,7 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> PantryStock ()
         {
             List<StockProductGroupVm> stockProductsVm = await stockProductService.GetStockOverviewIncludingZeroCount();
 
@@ -27,10 +27,7 @@ namespace GotStuff.Controllers
         {
             await stockProductService.AddNewProduct(id);
 
-            return RedirectToAction(nameof(Index), new { id = id });
+            return RedirectToAction(nameof(PantryStock), new { id = id });
         }
-
-
-
     }
 }
