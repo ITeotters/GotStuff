@@ -31,5 +31,16 @@ namespace GotStuff.Services.Implementation
 
             return pantriesVm;
         } 
+
+
+        public async Task AddNewPantry(PantryVm pantryVm)
+        {
+            Pantry pantry = new Pantry();
+
+            pantry.Id = pantryVm.Id;
+            pantry.Name = pantryVm.Name;
+            dbContext.Add(pantry);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

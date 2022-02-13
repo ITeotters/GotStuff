@@ -19,5 +19,19 @@ namespace GotStuff.Controllers
             List<PantryVm> pantriesVm = await pantryService.GetAllPantries();
             return View(pantriesVm);
         }
+
+
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Id", "Name")] PantryVm pantryVm)
+        {
+            await pantryService.AddNewPantry(pantryVm);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
