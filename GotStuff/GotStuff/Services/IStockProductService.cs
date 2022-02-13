@@ -9,7 +9,8 @@ namespace GotStuff.Services
         Task<StockProductDetailsVm> FindStockProductVmById(int? id);
         Task<StockProductDetailsVm> DeleteStockProduct(int? id);
         Task AddNewProduct(int knownProductId);
-        Task<List<StockProductGroupVm>> GetStockOverviewIncludingZeroCount();
+        Task<PantryVm> GetPantryOverview(int? pantryId);
         Task EditStockProduct(StockProductDetailsVm stockProductToEdit);
+        Task<bool> CheckIfPantryExists(int? id);
     }
 }

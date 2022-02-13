@@ -15,9 +15,10 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<StockProductGroupVm>> GetStockOverviewIncludingZeroCount()
+        public async Task<PantryVm> GetPantryOverview(int? pantryId)
         {
-            List<StockProductGroupVm> stockGroupList = new List<StockProductGroupVm>();
+            PantryVm retVal = new PantryVm();
+            retVal.Contents = new List<StockProductGroupVm>();
             var knownProducts = await dbContext.KnownProduct.ToListAsync();
 
             foreach(KnownProduct product in knownProducts)
@@ -26,11 +27,20 @@ namespace GotStuff.Services.Implementation
                 stockGroupVm.Name = product.Name;
                 stockGroupVm.ProductId = product.Id;
                 stockGroupVm.Count = await GetStockCountForProduct(product.Id);
+                stockGroupVm.PantryId = (int)pantryId;
 
-                stockGroupList.Add(stockGroupVm);
+                retVal.Contents.Add(stockGroupVm);
             }
 
-            return stockGroupList;
+            return retVal;
+        }
+
+
+        public async Task<bool> CheckIfPantryExists(int? id)
+        {
+            var pantries = await dbContext.Pantry.Where(p => p.Id == id).FirstOrDefaultAsync();
+            bool doesPantryExist = pantries != null;
+            return doesPantryExist;
         }
 
 

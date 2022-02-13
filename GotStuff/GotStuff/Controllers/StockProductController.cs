@@ -15,11 +15,24 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> PantryStock ()
+        public async Task<IActionResult> PantryStock (int? id)
         {
-            List<StockProductGroupVm> stockProductsVm = await stockProductService.GetStockOverviewIncludingZeroCount();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            return View(stockProductsVm);
+            bool isPantryExisting = await stockProductService.CheckIfPantryExists(id);
+
+            if (isPantryExisting)
+            {
+                PantryVm pantryContentsVm = await stockProductService.GetPantryOverview(id);
+                return View(pantryContentsVm);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 

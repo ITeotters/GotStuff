@@ -22,8 +22,7 @@ namespace GotStuff.Controllers
             }
 
             StockProductGroupVm stockProductsVm = await stockProductService.FindGroupByProductId(id);
-
-            return View(stockProductsVm);
+            return View(stockProductsVm); 
         }
 
 
