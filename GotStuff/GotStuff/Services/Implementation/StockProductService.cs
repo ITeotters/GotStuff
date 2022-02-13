@@ -26,7 +26,7 @@ namespace GotStuff.Services.Implementation
                 StockProductGroupVm stockGroupVm = new StockProductGroupVm();
                 stockGroupVm.Name = product.Name;
                 stockGroupVm.ProductId = product.Id;
-                stockGroupVm.Count = await GetStockCountForProduct(product.Id);
+                stockGroupVm.Count = await GetStockCountForProductInPantry(product.Id, pantryId);
                 stockGroupVm.PantryId = (int)pantryId;
 
                 retVal.Contents.Add(stockGroupVm);
@@ -44,10 +44,10 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        private async Task<int> GetStockCountForProduct(int productId)
+        private async Task<int> GetStockCountForProductInPantry(int productId, int? pantryId)
         {
             var retVal = await dbContext.StockProduct
-                .Where(sp => sp.KnownProductId == productId)
+                .Where(sp => sp.KnownProductId == productId && sp.PantryId == pantryId)
                 .CountAsync();
 
             return retVal;
