@@ -6,5 +6,7 @@ namespace GotStuff.Services
     {
         Task<List<PantryVm>> GetAllPantries();
         Task AddNewPantry(PantryVm pantryVm);
+        Task DeletePantry(int? id);
+        Task EditPantryName(PantryVm pantryVmToEdit);
     }
 }

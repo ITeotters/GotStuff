@@ -33,5 +33,20 @@ namespace GotStuff.Controllers
             await pantryService.AddNewPantry(pantryVm);
             return RedirectToAction(nameof(Index));
         }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+
+            await pantryService.DeletePantry(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> Edit(PantryVm pantryVmToEdit)
+        {
+            await pantryService.EditPantryName(pantryVmToEdit);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

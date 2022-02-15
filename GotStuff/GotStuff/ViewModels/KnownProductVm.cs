@@ -10,7 +10,7 @@ namespace GotStuff.ViewModels
         [Required]
         public string Name { get; set; }
 
-        [DisplayName("Shelf Life <days>")]
+        [DisplayName("Shelf Life")]
         public int DefaultShelfLife { get; set; }
 
         public KnownProductVm()

@@ -42,5 +42,23 @@ namespace GotStuff.Services.Implementation
             dbContext.Add(pantry);
             await dbContext.SaveChangesAsync();
         }
+
+
+        public async Task DeletePantry(int? id)
+        {
+            var pantryToDelete = await dbContext.Pantry.FirstOrDefaultAsync(sp => sp.Id == id);
+
+            dbContext.Remove(pantryToDelete);
+            await dbContext.SaveChangesAsync();
+        }
+
+
+        public async Task EditPantryName(PantryVm pantryVmToEdit)
+        {
+            var pantryToEdit = await dbContext.Pantry.FirstOrDefaultAsync(sp => sp.Id == pantryVmToEdit.Id);
+            pantryToEdit.Id = pantryVmToEdit.Id;
+            pantryToEdit.Name = pantryVmToEdit.Name;
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
