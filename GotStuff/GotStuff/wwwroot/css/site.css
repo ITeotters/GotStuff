@@ -16,3 +16,16 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #212529;
+    background-color: transparent;
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+
+.nav-link:hover {
+    color: dimgray;
+}
