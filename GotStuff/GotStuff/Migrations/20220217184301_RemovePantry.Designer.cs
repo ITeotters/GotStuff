@@ -4,6 +4,7 @@ using GotStuff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GotStuff.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220217184301_RemovePantry")]
+    partial class RemovePantry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace GotStuff.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("AppUserPantry", b =>
-                {
-                    b.Property<string>("AppUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PantriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppUsersId", "PantriesId");
-
-                    b.HasIndex("PantriesId");
-
-                    b.ToTable("AppUserPantry");
-                });
 
             modelBuilder.Entity("GotStuff.Models.AppRole", b =>
                 {
@@ -165,10 +152,18 @@ namespace GotStuff.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("Pantry");
                 });
@@ -312,19 +307,13 @@ namespace GotStuff.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AppUserPantry", b =>
+            modelBuilder.Entity("GotStuff.Models.Pantry", b =>
                 {
-                    b.HasOne("GotStuff.Models.AppUser", null)
+                    b.HasOne("GotStuff.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId1");
 
-                    b.HasOne("GotStuff.Models.Pantry", null)
-                        .WithMany()
-                        .HasForeignKey("PantriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("GotStuff.Models.StockProduct", b =>

@@ -4,6 +4,7 @@ using GotStuff.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GotStuff.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220217183713_Initial build")]
+    partial class Initialbuild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace GotStuff.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("AppUserPantry", b =>
-                {
-                    b.Property<string>("AppUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PantriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppUsersId", "PantriesId");
-
-                    b.HasIndex("PantriesId");
-
-                    b.ToTable("AppUserPantry");
-                });
 
             modelBuilder.Entity("GotStuff.Models.AppRole", b =>
                 {
@@ -82,6 +69,9 @@ namespace GotStuff.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -89,7 +79,10 @@ namespace GotStuff.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -105,6 +98,9 @@ namespace GotStuff.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("PantryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -135,6 +131,9 @@ namespace GotStuff.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("PantryId")
+                        .IsUnique();
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -164,6 +163,9 @@ namespace GotStuff.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -312,19 +314,15 @@ namespace GotStuff.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AppUserPantry", b =>
+            modelBuilder.Entity("GotStuff.Models.AppUser", b =>
                 {
-                    b.HasOne("GotStuff.Models.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("AppUsersId")
+                    b.HasOne("GotStuff.Models.Pantry", "Pantry")
+                        .WithOne("AppUser")
+                        .HasForeignKey("GotStuff.Models.AppUser", "PantryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GotStuff.Models.Pantry", null)
-                        .WithMany()
-                        .HasForeignKey("PantriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Pantry");
                 });
 
             modelBuilder.Entity("GotStuff.Models.StockProduct", b =>
@@ -395,6 +393,11 @@ namespace GotStuff.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GotStuff.Models.Pantry", b =>
+                {
+                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

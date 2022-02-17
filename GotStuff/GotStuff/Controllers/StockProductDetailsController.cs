@@ -45,6 +45,7 @@ namespace GotStuff.Controllers
         {
             await stockProductService.AddNewProduct(id);
 
+            // TODO: this does not work
             return RedirectToAction(nameof(Index), new { id = id});
         }
 

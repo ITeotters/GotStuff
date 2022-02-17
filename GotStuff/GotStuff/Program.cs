@@ -1,4 +1,5 @@
 using GotStuff.Data;
+using GotStuff.Models;
 using GotStuff.Services;
 using GotStuff.Services.Implementation;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +13,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<AppUser, AppRole>(options => options.Stores.MaxLengthForKeys = 128)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IKnownProductService, KnownProductService>();
 builder.Services.AddScoped<IStockProductService, StockProductService>();
