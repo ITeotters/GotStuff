@@ -36,11 +36,11 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(int id, int knownProductId)
         {
-            await stockProductService.AddNewProduct(id);
+            StockProductDetailsVm stockDetailsVm = await stockProductService.AddNewProduct(id, knownProductId);
 
-            return RedirectToAction(nameof(PantryStock), new { id = id });
+            return RedirectToAction(nameof(PantryStock), new { id = stockDetailsVm.PantryId});
         }
     }
 }

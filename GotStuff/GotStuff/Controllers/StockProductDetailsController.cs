@@ -14,14 +14,14 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int knownProductId)
         {
             if(id == null)
             {
                 return NotFound();
             }
 
-            StockProductGroupVm stockProductsVm = await stockProductService.FindGroupByProductId(id);
+            StockProductGroupVm stockProductsVm = await stockProductService.FindGroupByProductId(id, knownProductId);
             return View(stockProductsVm); 
         }
 
@@ -41,12 +41,11 @@ namespace GotStuff.Controllers
         }
 
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(int id, int knownProductId)
         {
-            await stockProductService.AddNewProduct(id);
+            await stockProductService.AddNewProduct(id, knownProductId);
 
-            // TODO: this does not work
-            return RedirectToAction(nameof(Index), new { id = id});
+            return RedirectToAction(nameof(Index), new { id = id, knownProductId = knownProductId });
         }
 
               
@@ -72,7 +71,7 @@ namespace GotStuff.Controllers
 
             StockProductDetailsVm deletedStockProduct = await stockProductService.DeleteStockProduct(id);
 
-            return RedirectToAction(nameof(Index), new { id = deletedStockProduct.ProductId });
+            return RedirectToAction(nameof(Index), new { id = deletedStockProduct.PantryId, knownProductId = deletedStockProduct.ProductId });
         }
     }
 }

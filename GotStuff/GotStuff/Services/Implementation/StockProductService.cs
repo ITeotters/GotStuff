@@ -73,9 +73,9 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<StockProductDetailsVm> FindStockProductVmById(int? id)
+        public async Task<StockProductDetailsVm> FindStockProductVmById(int? stockProductId)
         {
-            var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == id);
+            var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == stockProductId);
 
             StockProductDetailsVm stockProductVm = ToVm(stockProduct);
 
@@ -105,12 +105,13 @@ namespace GotStuff.Services.Implementation
             stockProductVm.Name = stockProduct.KnownProduct.Name;
             stockProductVm.AcquiredDate = stockProduct.AcquiredDate;
             stockProductVm.ExpirationDate = stockProduct.ExpirationDate;
+            stockProductVm.PantryId = stockProduct.PantryId;
 
             return stockProductVm;
         }
 
 
-        public async Task AddNewProduct(int knownProductId)
+        public async Task<StockProductDetailsVm> AddNewProduct(int pantryId, int knownProductId)
         {
             StockProduct stockProduct = new StockProduct();
             KnownProduct knownProduct = await dbContext.KnownProduct.Where(kp => kp.Id == knownProductId).FirstOrDefaultAsync();
@@ -120,23 +121,27 @@ namespace GotStuff.Services.Implementation
             stockProduct.KnownProductId = knownProductId;
             stockProduct.AcquiredDate = DateTime.Now;
             stockProduct.ExpirationDate = stockProduct.AcquiredDate + shelfLife;
-            stockProduct.PantryId = 1;
+            stockProduct.PantryId = pantryId;
             
             dbContext.StockProduct.Add(stockProduct);
             await dbContext.SaveChangesAsync();
+            StockProductDetailsVm stockVm = ToVm(stockProduct);
+
+            return stockVm;
         }
 
 
-        public async Task<StockProductGroupVm> FindGroupByProductId(int? id)
+        public async Task<StockProductGroupVm> FindGroupByProductId(int? pantryId, int knownProductId)
         {
             StockProductGroupVm retVal = new StockProductGroupVm();
 
-            var knownproduct = await dbContext.KnownProduct.Where(np => np.Id == id).FirstOrDefaultAsync();
+            var knownproduct = await dbContext.KnownProduct.Where(np => np.Id == knownProductId).FirstOrDefaultAsync();
 
             retVal.Name = knownproduct.Name;
-            retVal.ProductId = id.Value;
-            retVal.StockProducts = await GetAllStockByProductId(id);
+            retVal.ProductId = knownProductId;
+            retVal.StockProducts = await GetAllStockByProductId(knownProductId);
             retVal.Count = retVal.StockProducts.Count;
+            retVal.PantryId = pantryId.Value;
 
             return retVal;
         }
