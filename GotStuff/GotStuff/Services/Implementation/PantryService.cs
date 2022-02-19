@@ -15,12 +15,14 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<List<PantryVm>> GetAllPantries()
+        public async Task<List<PantryVm>> GetAllUserPantries(string userId)
         {
-            List<Pantry> pantries = await dbContext.Pantry.ToListAsync();
-            List<PantryVm> pantriesVm = new List<PantryVm>();   
+            List<PantryVm> pantriesVm = new List<PantryVm>();
 
-            foreach(var pantry in pantries)
+            AppUser owner = await GetUserById(userId);
+            List<Pantry> pantries = await dbContext.Pantry.Where(p => p.AppUsers.Contains(owner)).ToListAsync();
+
+            foreach (var pantry in pantries)
             {
                 PantryVm pantryVm = new PantryVm();
                 pantryVm.Id = pantry.Id;
@@ -33,14 +35,25 @@ namespace GotStuff.Services.Implementation
         } 
 
 
-        public async Task AddNewPantry(PantryVm pantryVm)
+        public async Task AddNewPantry(PantryVm pantryVm, string userId)
         {
             Pantry pantry = new Pantry();
 
+            AppUser owner = await GetUserById(userId);
+
             pantry.Id = pantryVm.Id;
             pantry.Name = pantryVm.Name;
-            dbContext.Add(pantry);
+
+            pantry.AppUsers.Add(owner);
+            dbContext.Pantry.Add(pantry);
             await dbContext.SaveChangesAsync();
+        }
+
+
+        private async Task<AppUser> GetUserById(string id)
+        {
+            AppUser user = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            return user;
         }
 
 

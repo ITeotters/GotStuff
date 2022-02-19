@@ -6,6 +6,11 @@ namespace GotStuff.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<AppUser> AppUsers { get; set; }
+        public ICollection<AppUser> AppUsers { get; set; }
+
+        public Pantry()
+        {
+            this.AppUsers = new HashSet<AppUser>();
+        }
     }
 }

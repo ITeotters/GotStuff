@@ -1,5 +1,8 @@
-﻿using GotStuff.Services;
+﻿using GotStuff.Models;
+using GotStuff.Services;
 using GotStuff.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GotStuff.Controllers
@@ -7,16 +10,19 @@ namespace GotStuff.Controllers
     public class PantryController : Controller
     {
         private readonly IPantryService pantryService;
+        private readonly UserManager<AppUser> userManager;
 
-        public PantryController(IPantryService pantryService)
+        public PantryController(IPantryService pantryService, UserManager<AppUser> userManager)
         {
             this.pantryService = pantryService;
+            this.userManager = userManager;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            List<PantryVm> pantriesVm = await pantryService.GetAllPantries();
+            string userId = userManager.GetUserId(User);
+            List<PantryVm> pantriesVm = await pantryService.GetAllUserPantries(userId);
             return View(pantriesVm);
         }
 
@@ -27,10 +33,13 @@ namespace GotStuff.Controllers
         }
 
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id", "Name")] PantryVm pantryVm)
         {
-            await pantryService.AddNewPantry(pantryVm);
+            string userId = userManager.GetUserId(User);
+            
+            await pantryService.AddNewPantry(pantryVm, userId);
             return RedirectToAction(nameof(Index));
         }
 

@@ -34,7 +34,7 @@ namespace GotStuff.Migrations
 
                     b.HasIndex("PantriesId");
 
-                    b.ToTable("AppUserPantry");
+                    b.ToTable("AppUserPantry", (string)null);
                 });
 
             modelBuilder.Entity("GotStuff.Models.AppRole", b =>
@@ -154,7 +154,7 @@ namespace GotStuff.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KnownProduct");
+                    b.ToTable("KnownProduct", (string)null);
                 });
 
             modelBuilder.Entity("GotStuff.Models.Pantry", b =>
@@ -170,7 +170,7 @@ namespace GotStuff.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pantry");
+                    b.ToTable("Pantry", (string)null);
                 });
 
             modelBuilder.Entity("GotStuff.Models.StockProduct", b =>
@@ -199,7 +199,7 @@ namespace GotStuff.Migrations
 
                     b.HasIndex("PantryId");
 
-                    b.ToTable("StockProduct");
+                    b.ToTable("StockProduct", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
