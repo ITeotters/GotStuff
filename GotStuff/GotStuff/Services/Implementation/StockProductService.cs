@@ -150,7 +150,7 @@ namespace GotStuff.Services.Implementation
         private async Task<StockProduct> GetStockProductById(int id)
         {
             StockProduct retVal = await dbContext.StockProduct
-                .Where(sp => sp.KnownProductId == id)
+                .Where(sp => sp.Id == id)
                 .FirstOrDefaultAsync();
 
             return retVal; 
@@ -159,7 +159,7 @@ namespace GotStuff.Services.Implementation
 
         public async Task EditStockProduct(StockProductDetailsVm stockProductVmToEdit)
         {
-            StockProduct stockProduct = await GetStockProductById(stockProductVmToEdit.ProductId);
+            StockProduct stockProduct = await GetStockProductById(stockProductVmToEdit.StockProductDetailsId);
             stockProduct.KnownProductId = stockProductVmToEdit.ProductId;
             stockProduct.AcquiredDate = stockProductVmToEdit.AcquiredDate;
             stockProduct.ExpirationDate = stockProductVmToEdit.ExpirationDate;

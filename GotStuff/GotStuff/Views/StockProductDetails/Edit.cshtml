@@ -12,6 +12,8 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" claas="text-danger"></div>
             <input type="hidden" asp-for="ProductId"/>
+            <input type="hidden" asp-for="PantryId"/>
+            <input type="hidden" asp-for="StockProductDetailsId"/>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" readonly/>
@@ -36,7 +38,7 @@
 </div>
 
 <div>
-    <a class="btn btn-outline-dark" asp-action="Index" asp-route-id="@Model?.PantryId" asp-route-productId="@Model?.ProductId">Back to List</a>
+    <a class="btn btn-outline-dark" asp-action="Index" asp-route-id="@Model?.PantryId" asp-route-knownProductId="@Model?.ProductId">Back to List</a>
 </div>
 
 @section Scripts {

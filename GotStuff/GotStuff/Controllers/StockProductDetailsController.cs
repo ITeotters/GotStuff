@@ -34,10 +34,10 @@ namespace GotStuff.Controllers
 
 
         [HttpPost, ActionName("Edit")]
-        public async Task<IActionResult> EditConfirmed([Bind ("Name", "ProductId", "StockProductDetailsId", "AcquiredDate", "ExpirationDate")] StockProductDetailsVm stockVm)
+        public async Task<IActionResult> EditConfirmed([Bind ("Name", "ProductId", "StockProductDetailsId", "AcquiredDate", "ExpirationDate", "PantryId")] StockProductDetailsVm stockVm)
         {
             await stockProductService.EditStockProduct(stockVm);
-            return RedirectToAction(nameof(Index), new { id = stockVm.ProductId });
+            return RedirectToAction(nameof(Index), new { id = stockVm.PantryId, knownProductId = stockVm.ProductId });
         }
 
 
