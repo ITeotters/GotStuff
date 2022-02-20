@@ -27,6 +27,7 @@
             <td>
                 <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                 <a class="btn btn-light" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-light" asp-controller="SharePantry" asp-action="Index" asp-route-id="@item.Id">Share</a>
 
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalForDelete_@item.Id">Delete</button>
                      

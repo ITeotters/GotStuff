@@ -1,0 +1,37 @@
+﻿@model IEnumerable<GotStuff.ViewModels.AppUserVm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAddress)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <a class="btn btn-outline-dark" asp-controller="Pantry" asp-action="Index">Back to List</a>
+</div>

@@ -6,6 +6,7 @@
         public string Name { get; set; }
 
         public List<StockProductGroupVm> Contents { get; set; }
+        public List<AppUserVm> AppUsers { get; set; }
     }
 }
 
