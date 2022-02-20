@@ -1,6 +1,7 @@
 ﻿using GotStuff.Data;
 using GotStuff.Models;
 using GotStuff.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace GotStuff.Services.Implementation
 {
@@ -13,11 +14,11 @@ namespace GotStuff.Services.Implementation
             this.dbContext = dbContext;
         }
 
-        public List<AppUserVm> GetAllUsersVmThatShareThePantry(int? pantryId)
+        public async Task<List<AppUserVm>> GetAllUsersVmThatShareThePantry(int? pantryId)
         {
             List<AppUserVm> appUsersVm = new List<AppUserVm>();
 
-            ICollection<AppUser> appUsers = FindUsersThatShareThePantry(pantryId);
+            ICollection<AppUser> appUsers = await FindUsersThatShareThePantry(pantryId);
 
             foreach (var user in appUsers)
             {
@@ -33,12 +34,27 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        private ICollection<AppUser> FindUsersThatShareThePantry(int? pantryId)
+        private async Task<ICollection<AppUser>> FindUsersThatShareThePantry(int? pantryId)
         {
-            Pantry pantry = dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefault();
-            ICollection<AppUser> appUsers = dbContext.Users.Where(u => u.Pantries.Contains(pantry)).ToList();
+            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefaultAsync();
+            ICollection<AppUser> appUsers = await dbContext.Users.Where(u => u.Pantries.Contains(pantry)).ToListAsync();
 
             return appUsers;
+        }
+
+
+        public async Task RemoveTheUserFromPantry(string userId)
+        {
+            AppUser user = await GetUserById(userId);
+            dbContext.Pantry.Where(p => p.AppUsers.Remove(user));
+            await dbContext.SaveChangesAsync();
+        }
+
+
+        private async Task<AppUser> GetUserById(string userId)
+        {
+            AppUser user = await dbContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            return user;
         }
     }
 }
