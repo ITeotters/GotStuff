@@ -47,8 +47,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <form asp-action="Delete" asp-route-id="@item.Id">
+                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-pantryId = "@item.PantryId">
                                 <input type="hidden" asp-for="@item.Id" />
+                                <input type="hidden" asp-for="@item.PantryId" />
                                 <input type="submit" value="Delete" class="btn btn-primary" />
                             </form>
                         </div>

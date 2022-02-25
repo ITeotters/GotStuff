@@ -32,7 +32,7 @@ namespace GotStuff.Controllers
 
 
         //TODO: need the pantryId as well I think + work on the html part
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id, int pantryId)
         {
             if (id == null)
             {
@@ -49,7 +49,7 @@ namespace GotStuff.Controllers
                 await sharePantryService.RemoveTheUserFromPantry(id);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id = pantryId });
         }
     }
 }
