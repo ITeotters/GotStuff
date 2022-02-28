@@ -4,7 +4,7 @@ namespace GotStuff.Services
 {
     public interface ISharePantryService
     {
-        Task<List<AppUserVm>> GetAllUsersVmThatShareThePantry(int? pantryId);
-        Task RemoveTheUserFromPantry(string userId);
+        Task<PantryVm> GetPantryVm(int? pantryId);
+        Task RemoveTheUserFromPantry(string userId, int pantryId);
     }
 }

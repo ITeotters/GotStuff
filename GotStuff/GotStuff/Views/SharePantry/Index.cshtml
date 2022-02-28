@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GotStuff.ViewModels.AppUserVm>
+﻿@model GotStuff.ViewModels.PantryVm
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.AppUsers) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
@@ -27,39 +27,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EmailAddress)
             </td>
+
             <td>
-
-                <div class="form-group">
-                @if (User.Identity.Name != item.Id)
-                {
-                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalForDelete_@item.Id">Remove</button>
-                     
-                <div class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static" id="modalForDelete_@item.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Remove</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to remove this user from this pantry?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-pantryId = "@item.PantryId">
-                                <input type="hidden" asp-for="@item.Id" />
-                                <input type="hidden" asp-for="@item.PantryId" />
-                                <input type="submit" value="Delete" class="btn btn-primary" />
-                            </form>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                }
-
-            </div>
-
+                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-pantryId="@Model.Id">Remove</a>
             </td>
          </tr>
 }

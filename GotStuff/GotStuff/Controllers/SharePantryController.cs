@@ -24,9 +24,9 @@ namespace GotStuff.Controllers
                 return NotFound();
             }
 
-            List<AppUserVm> appUsersVm = await sharePantryService.GetAllUsersVmThatShareThePantry(id);
+            PantryVm pantryVm = await sharePantryService.GetPantryVm(id);
 
-            return View(appUsersVm);
+            return View(pantryVm);
         }
 
 
@@ -46,7 +46,7 @@ namespace GotStuff.Controllers
             }
             else
             {
-                await sharePantryService.RemoveTheUserFromPantry(id);
+                await sharePantryService.RemoveTheUserFromPantry(id, pantryId);
             }
 
             return RedirectToAction(nameof(Index), new { id = pantryId });

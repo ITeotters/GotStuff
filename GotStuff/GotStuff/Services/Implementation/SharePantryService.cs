@@ -14,11 +14,11 @@ namespace GotStuff.Services.Implementation
             this.dbContext = dbContext;
         }
 
-        public async Task<List<AppUserVm>> GetAllUsersVmThatShareThePantry(int? pantryId)
+        private async Task<List<AppUserVm>> GetAllUsersVmThatShareThePantry(int? pantryId)
         {
             List<AppUserVm> appUsersVm = new List<AppUserVm>();
 
-            ICollection<AppUser> appUsers = await FindUsersThatShareThePantry(pantryId);
+            ICollection<AppUser> appUsers = await FindUsersForPantry(pantryId);
 
             foreach (var user in appUsers)
             {
@@ -34,19 +34,30 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        private async Task<ICollection<AppUser>> FindUsersThatShareThePantry(int? pantryId)
+        public async Task<PantryVm> GetPantryVm(int? pantryId)
         {
-            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefaultAsync();
-            ICollection<AppUser> appUsers = await dbContext.Users.Where(u => u.Pantries.Contains(pantry)).ToListAsync();
+            PantryVm pantryVm = new PantryVm();
+            pantryVm.AppUsers = await GetAllUsersVmThatShareThePantry(pantryId);
+            pantryVm.Id = pantryId.Value;
+
+            return pantryVm;
+        }
+
+
+        private async Task<ICollection<AppUser>> FindUsersForPantry(int? pantryId)
+        {
+            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).Include(p => p.AppUsers).FirstOrDefaultAsync();
+            ICollection<AppUser> appUsers = pantry.AppUsers;
+
 
             return appUsers;
         }
 
 
-        public async Task RemoveTheUserFromPantry(string userId)
+        public async Task RemoveTheUserFromPantry(string userId, int pantryId)
         {
-            AppUser user = await GetUserById(userId);
-            dbContext.Pantry.Where(p => p.AppUsers.Remove(user));
+            var pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefaultAsync();
+
             await dbContext.SaveChangesAsync();
         }
 
