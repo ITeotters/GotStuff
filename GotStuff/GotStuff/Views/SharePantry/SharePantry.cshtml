@@ -1,0 +1,37 @@
+﻿@model GotStuff.ViewModels.PantryVm
+
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Share pantry with a friend!</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SharePantry">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+
+
+
+                @*WIP: *@
+               @* <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                @if (ViewBag.Message == "UserExist")
+                {
+                    <br /><span style="color:red;">You already share the pantry with this user.</span>
+                }
+                <br /><br /><input type="submit" value="SharePantry" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-outline-dark" asp-controller="SharePantry" asp-action="Index" asp-route-id = "@Model.Id">Back to List</a>
+</div>

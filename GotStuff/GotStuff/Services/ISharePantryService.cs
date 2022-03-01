@@ -1,4 +1,5 @@
-﻿using GotStuff.ViewModels;
+﻿using GotStuff.Models;
+using GotStuff.ViewModels;
 
 namespace GotStuff.Services
 {
@@ -6,5 +7,6 @@ namespace GotStuff.Services
     {
         Task<PantryVm> GetPantryVm(int? pantryId);
         Task RemoveTheUserFromPantry(string userId, int pantryId);
+        Task AddNewUserToPantry(AppUserVm user, int pantryId);
     }
 }

@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<p>
+     <a class="btn btn-outline-dark" asp-action="SharePantry" asp-route-id="@Model.Id">Add new friend</a>
+</p>
 
 <table class="table">
     <thead>
@@ -29,7 +31,10 @@
             </td>
 
             <td>
-                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-pantryId="@Model.Id">Remove</a>
+                @if (User.Identity.Name != item.EmailAddress)
+                {
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-pantryId="@Model.Id">Remove</a>
+                }
             </td>
          </tr>
 }

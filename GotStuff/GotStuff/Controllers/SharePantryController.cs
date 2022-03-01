@@ -30,8 +30,6 @@ namespace GotStuff.Controllers
         }
 
 
-
-        //TODO: need the pantryId as well I think + work on the html part
         public async Task<IActionResult> Delete(string id, int pantryId)
         {
             if (id == null)
@@ -42,12 +40,42 @@ namespace GotStuff.Controllers
             string currentUserId = userManager.GetUserId(User);
             if (currentUserId == id)
             {
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = "PantryOwner";
+                return RedirectToAction(nameof(Index), new { id = pantryId });
             }
             else
             {
                 await sharePantryService.RemoveTheUserFromPantry(id, pantryId);
             }
+
+            return RedirectToAction(nameof(Index), new { id = pantryId });
+        }
+
+
+        public IActionResult SharePantry(int id)
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SharePantry([Bind("Id", "FullName, EmailAddress", "PantryId")] AppUserVm user, int pantryId)
+        {
+
+            // check if user is already in the list
+            bool isUserExisting = false;
+
+            if (ModelState.IsValid && !isUserExisting)
+            {
+                await sharePantryService.AddNewUserToPantry(user, pantryId);
+                return RedirectToAction(nameof(Index), new {id = pantryId});
+            }
+            else
+            {
+                ViewBag.Message = "UserExist";
+                return View();
+            }
+
 
             return RedirectToAction(nameof(Index), new { id = pantryId });
         }

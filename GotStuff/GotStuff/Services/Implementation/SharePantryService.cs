@@ -46,7 +46,7 @@ namespace GotStuff.Services.Implementation
 
         private async Task<ICollection<AppUser>> FindUsersForPantry(int? pantryId)
         {
-            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).Include(p => p.AppUsers).FirstOrDefaultAsync();
+            Pantry pantry = await GetPantryById(pantryId);
             ICollection<AppUser> appUsers = pantry.AppUsers;
 
 
@@ -56,16 +56,34 @@ namespace GotStuff.Services.Implementation
 
         public async Task RemoveTheUserFromPantry(string userId, int pantryId)
         {
-            var pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefaultAsync();
+            var pantry = await GetPantryById(pantryId);
+            AppUser userToRemove = pantry.AppUsers.Where(u => u.Id == userId).FirstOrDefault();
+            pantry.AppUsers.Remove(userToRemove);
 
             await dbContext.SaveChangesAsync();
         }
 
 
-        private async Task<AppUser> GetUserById(string userId)
+        private async Task<Pantry> GetPantryById(int? pantryId)
         {
-            AppUser user = await dbContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
-            return user;
+            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).Include(p => p.AppUsers).FirstOrDefaultAsync();
+            return pantry;
+        }
+
+
+        public async Task AddNewUserToPantry(AppUserVm user, int pantryId)
+        {
+            var pantry = await GetPantryById(pantryId);
+            AppUser userToAdd = pantry.AppUsers.Where(u => u.Id == user.Id).FirstOrDefault();
+
+
+            //Check if ok and why pantryId is 0
+            userToAdd.Id = user.Id;
+            userToAdd.Email = user.EmailAddress;
+            userToAdd.Pantries.Add(pantry);
+            pantry.AppUsers.Add(userToAdd);
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }
