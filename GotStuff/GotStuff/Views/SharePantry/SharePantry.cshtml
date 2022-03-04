@@ -1,4 +1,4 @@
-﻿@model GotStuff.ViewModels.PantryVm
+﻿@model GotStuff.ViewModels.AppUserVm
 
 
 
@@ -12,20 +12,26 @@
     <div class="col-md-4">
         <form asp-action="SharePantry">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PantryId"/>
             <div class="form-group">
-
-
-
-                @*WIP: *@
-               @* <label asp-for="EmailAddress" class="control-label"></label>
+               <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               <label asp-for="EmailAddress" class="control-label"></label>
                 <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>*@
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 @if (ViewBag.Message == "UserExist")
                 {
-                    <br /><span style="color:red;">You already share the pantry with this user.</span>
-                }
+                    <br /><span style="color:red;">You already share the pantry with this user.</span>
+                }
+                else if(ViewBag.Message == "NoUserAccount")
+                {
+                     <br /><span style="color:red;">There is no user with this account.</span>
+                }
                 <br /><br /><input type="submit" value="SharePantry" class="btn btn-primary" />
             </div>
         </form>
@@ -33,5 +39,5 @@
 </div>
 
 <div>
-    <a class="btn btn-outline-dark" asp-controller="SharePantry" asp-action="Index" asp-route-id = "@Model.Id">Back to List</a>
+    <a class="btn btn-outline-dark" asp-controller="SharePantry" asp-action="Index">Back to List</a>
 </div>

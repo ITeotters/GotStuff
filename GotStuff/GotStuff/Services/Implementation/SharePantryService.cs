@@ -71,19 +71,54 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task AddNewUserToPantry(AppUserVm user, int pantryId)
+        private async Task<AppUser> GetUserByEmailAddress(AppUserVm user)
         {
-            var pantry = await GetPantryById(pantryId);
-            AppUser userToAdd = pantry.AppUsers.Where(u => u.Id == user.Id).FirstOrDefault();
+            AppUser retVal = await dbContext.Users.Where(u => u.Email == user.EmailAddress).FirstOrDefaultAsync();
+            return retVal;
+        }
 
 
-            //Check if ok and why pantryId is 0
-            userToAdd.Id = user.Id;
+        public async Task AddNewUserToPantry(AppUserVm user)
+        {
+            var pantry = await GetPantryById(user.PantryId);
+            AppUser userToAdd = await GetUserByEmailAddress(user);
+
             userToAdd.Email = user.EmailAddress;
             userToAdd.Pantries.Add(pantry);
             pantry.AppUsers.Add(userToAdd);
 
             await dbContext.SaveChangesAsync();
+        }
+
+
+        public async Task<bool> CheckIfUserSharesPantry(AppUserVm user)
+        {
+            bool retVal = true;
+
+            AppUser userToCheck = await dbContext.Users.Where(u => u.Email == user.EmailAddress).Include(u => u.Pantries).FirstOrDefaultAsync();
+            //var pantry = await dbContext.Pantry.Where(p => p.Id == user.PantryId).Include(p => p.AppUsers).FirstOrDefaultAsync();
+             
+            if (userToCheck == null)
+            {
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+
+        public async Task<bool> CheckIfUserExistsInDatabase(AppUserVm user)
+        {
+            bool retVal = true;
+
+            AppUser userToCheck = await GetUserByEmailAddress(user);
+
+            if (userToCheck == null)
+            {
+                retVal = false;
+            }
+
+            return retVal;
         }
     }
 }
