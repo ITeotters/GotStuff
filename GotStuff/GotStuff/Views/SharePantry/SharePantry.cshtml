@@ -39,5 +39,6 @@
 </div>
 
 <div>
-    <a class="btn btn-outline-dark" asp-controller="SharePantry" asp-action="Index">Back to List</a>
+    <input type="text" asp-for="PantryId"/>
+    <a class="btn btn-outline-dark" asp-controller="SharePantry" asp-action="Index" asp-route-id = "PantryId">Back to List</a>
 </div>

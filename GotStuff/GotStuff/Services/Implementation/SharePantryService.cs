@@ -95,10 +95,10 @@ namespace GotStuff.Services.Implementation
         {
             bool retVal = true;
 
-            AppUser userToCheck = await dbContext.Users.Where(u => u.Email == user.EmailAddress).Include(u => u.Pantries).FirstOrDefaultAsync();
-            //var pantry = await dbContext.Pantry.Where(p => p.Id == user.PantryId).Include(p => p.AppUsers).FirstOrDefaultAsync();
+            AppUser userToCheck = await GetUserByEmailAddress(user);
+            var pantry = await dbContext.Pantry.Where(p => p.Id == user.PantryId).Include(p => p.AppUsers).Where(p => p.AppUsers.Contains(userToCheck)).FirstOrDefaultAsync();
              
-            if (userToCheck == null)
+            if (pantry == null)
             {
                 retVal = false;
             }
