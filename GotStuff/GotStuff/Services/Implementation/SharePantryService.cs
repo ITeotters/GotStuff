@@ -1,5 +1,6 @@
 ﻿using GotStuff.Data;
 using GotStuff.Models;
+using GotStuff.Services.Mappers;
 using GotStuff.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,19 +72,19 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        private async Task<AppUser> GetUserByEmailAddress(AppUserVm user)
+        private async Task<AppUser> GetUserByEmailAddress(string userEmail)
         {
-            AppUser retVal = await dbContext.Users.Where(u => u.Email == user.EmailAddress).FirstOrDefaultAsync();
+            AppUser retVal = await dbContext.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
             return retVal;
         }
 
 
-        public async Task AddNewUserToPantry(AppUserVm user)
+        public async Task AddNewUserToPantry(SharePantryVm sharePantry)
         {
-            var pantry = await GetPantryById(user.PantryId);
-            AppUser userToAdd = await GetUserByEmailAddress(user);
+            var pantry = await GetPantryById(sharePantry.Pantry.Id);
+            AppUser userToAdd = await GetUserByEmailAddress(sharePantry.AppUser.EmailAddress);
 
-            userToAdd.Email = user.EmailAddress;
+            userToAdd.Email = sharePantry.AppUser.EmailAddress;
             userToAdd.Pantries.Add(pantry);
             pantry.AppUsers.Add(userToAdd);
 
@@ -91,12 +92,16 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<bool> CheckIfUserSharesPantry(AppUserVm user)
+        public async Task<bool> IsUserPantryMember(string userEmail, int pantryId)
         {
             bool retVal = true;
 
-            AppUser userToCheck = await GetUserByEmailAddress(user);
-            var pantry = await dbContext.Pantry.Where(p => p.Id == user.PantryId).Include(p => p.AppUsers).Where(p => p.AppUsers.Contains(userToCheck)).FirstOrDefaultAsync();
+            AppUser userToCheck = await GetUserByEmailAddress(userEmail);
+            var pantry = await dbContext.Pantry
+                .Where(p => p.Id == pantryId)
+                .Include(p => p.AppUsers)
+                .Where(p => p.AppUsers.Contains(userToCheck))
+                .FirstOrDefaultAsync();
              
             if (pantry == null)
             {
@@ -107,11 +112,11 @@ namespace GotStuff.Services.Implementation
         }
 
 
-        public async Task<bool> CheckIfUserExistsInDatabase(AppUserVm user)
+        public async Task<bool> CheckIfUserExistsInDatabase(string userEmail)
         {
             bool retVal = true;
 
-            AppUser userToCheck = await GetUserByEmailAddress(user);
+            AppUser userToCheck = await GetUserByEmailAddress(userEmail);
 
             if (userToCheck == null)
             {
@@ -119,6 +124,19 @@ namespace GotStuff.Services.Implementation
             }
 
             return retVal;
+        }
+
+
+        public async Task<SharePantryVm> GetSharedPantryByPantryId(int pantryId)
+        {
+            SharePantryVm sharePantryVm = new SharePantryVm();
+            Pantry pantry = await dbContext.Pantry.Where(p => p.Id == pantryId).FirstOrDefaultAsync();
+            PantryMapper pantryMapper = new PantryMapper();
+            PantryVm pantryVm = pantryMapper.ToVm(pantry);
+
+            sharePantryVm.Pantry = pantryVm;
+
+            return sharePantryVm;
         }
     }
 }

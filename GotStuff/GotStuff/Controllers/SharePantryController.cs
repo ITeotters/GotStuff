@@ -52,32 +52,38 @@ namespace GotStuff.Controllers
         }
 
 
-        public IActionResult SharePantry(int id)
+        public async Task<IActionResult> SharePantry(int pantryId)
         {
-            return View();
+            SharePantryVm sharePantryVm = await sharePantryService.GetSharedPantryByPantryId(pantryId);
+
+            return View(sharePantryVm);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> SharePantry([Bind("Id", "FullName, EmailAddress", "PantryId")] AppUserVm user, int pantryId)
+        public async Task<IActionResult> SharePantry([Bind("AppUser", "Pantry")] SharePantryVm sharePantry)
         {
-
-            // check if user is already in the list
-            bool isUserExisting = false;
-
-            if (ModelState.IsValid && !isUserExisting)
+            if (!ModelState.IsValid)
             {
-                await sharePantryService.AddNewUserToPantry(user, pantryId);
-                return RedirectToAction(nameof(Index), new {id = pantryId});
+                return NotFound();
             }
-            else
+
+            bool userIsInDatabase = await sharePantryService.CheckIfUserExistsInDatabase(sharePantry.AppUser.EmailAddress);
+            if (!userIsInDatabase)
+            {
+                ViewBag.Message = "NoUserAccount";
+                return View();
+            }
+
+            bool userCanSharePantry = !await sharePantryService.IsUserPantryMember(sharePantry.AppUser.EmailAddress, sharePantry.Pantry.Id);
+            if (!userCanSharePantry)
             {
                 ViewBag.Message = "UserExist";
                 return View();
             }
 
-
-            return RedirectToAction(nameof(Index), new { id = pantryId });
+            await sharePantryService.AddNewUserToPantry(sharePantry);
+            return RedirectToAction(nameof(Index), new {id = sharePantry.Pantry.Id});
         }
     }
 }

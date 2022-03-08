@@ -7,8 +7,9 @@ namespace GotStuff.Services
     {
         Task<PantryVm> GetPantryVm(int? pantryId);
         Task RemoveTheUserFromPantry(string userId, int pantryId);
-        Task AddNewUserToPantry(AppUserVm user);
-        Task<bool> CheckIfUserSharesPantry(AppUserVm user);
-        Task<bool> CheckIfUserExistsInDatabase(AppUserVm user);
+        Task AddNewUserToPantry(SharePantryVm sharePantry);
+        Task<bool> IsUserPantryMember(string userEmail, int pantryId);
+        Task<bool> CheckIfUserExistsInDatabase(string userEmail);
+        Task<SharePantryVm> GetSharedPantryByPantryId(int pantryId);
     }
 }
