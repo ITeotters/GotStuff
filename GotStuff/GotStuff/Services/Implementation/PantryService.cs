@@ -1,5 +1,6 @@
 ﻿using GotStuff.Data;
 using GotStuff.Models;
+using GotStuff.Services.Mappers;
 using GotStuff.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,9 +25,8 @@ namespace GotStuff.Services.Implementation
 
             foreach (var pantry in pantries)
             {
-                PantryVm pantryVm = new PantryVm();
-                pantryVm.Id = pantry.Id;
-                pantryVm.Name = pantry.Name;
+                PantryMapper mapper = new PantryMapper();
+                PantryVm pantryVm = mapper.ToVm(pantry);
 
                 pantriesVm.Add(pantryVm);
             }
