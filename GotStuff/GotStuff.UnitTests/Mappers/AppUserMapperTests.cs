@@ -11,11 +11,15 @@ namespace GotStuff.UnitTests
         public void ValidModelReturnsNotNull()
         {
             AppUserMapper mapper = new AppUserMapper();
-            AppUser user = new AppUser();
-            user.Id = "1234xyz";
-            user.FullName = "John Bob";
-            user.Email = "john@bob.com";
+            AppUser user = new AppUser()
+            {
+                Id = "1234xyz",
+                FullName = "John Bob",
+                Email = "john@bob.com"
+            };
+
             var result = mapper.ToVm(user);
+
             Assert.IsNotNull(result);
         }
 
@@ -23,15 +27,37 @@ namespace GotStuff.UnitTests
         [TestMethod]
         public void ValidModelReturnsExpectedProperties()
         {
+            string id = "1234xyz";
+            string fullName = "bob";
+            string email = "bob@bob.com";
+
             AppUserMapper mapper = new AppUserMapper();
-            AppUser user = new AppUser();
-            user.Id = "1234xyz";
-            user.FullName = "John Bob";
-            user.Email = "john@bob.com";
+            AppUser user = new AppUser()
+            {
+                Id = id,
+                FullName = fullName,
+                Email = email
+            };
+
             var result = mapper.ToVm(user);
-            Assert.AreEqual(result.Id, user.Id);
-            Assert.AreEqual(result.FullName, user.FullName);
-            Assert.AreEqual(result.EmailAddress, user.Email);
+
+            Assert.AreEqual(id, result.Id);
+            Assert.AreEqual(fullName, result.FullName);
+            Assert.AreEqual(email, result.EmailAddress);
+        }
+
+
+        [TestMethod]
+        public void ModelNullReturnsNull()
+        {
+            // Arrange
+            AppUserMapper mapper = new AppUserMapper();
+
+            // Act
+            var result = mapper.ToVm(null);
+
+            // Assert
+            Assert.IsNull(result);
         }
     }
 }

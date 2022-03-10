@@ -7,6 +7,12 @@ namespace GotStuff.Services.Mappers
     {
         public PantryVm ToVm(Pantry model)
         {
+            
+            if(model == null)
+            {
+                return null;
+            }
+
             PantryVm pantryVm = new PantryVm();
             pantryVm.Id = model.Id;
             pantryVm.Name = model.Name;
@@ -32,3 +38,4 @@ namespace GotStuff.Services.Mappers
         }
     }
 }
+ 
