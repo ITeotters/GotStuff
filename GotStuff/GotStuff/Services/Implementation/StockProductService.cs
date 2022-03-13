@@ -2,12 +2,14 @@
 using GotStuff.ViewModels;
 using GotStuff.Models;
 using Microsoft.EntityFrameworkCore;
+using GotStuff.Services.Mappers;
 
 namespace GotStuff.Services.Implementation
 {
     public class StockProductService : IStockProductService
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly StockProductMapper mapper = new StockProductMapper();
 
         public StockProductService(ApplicationDbContext dbContext)
         {
@@ -77,7 +79,7 @@ namespace GotStuff.Services.Implementation
         {
             var stockProduct = await dbContext.StockProduct.Include(sp => sp.KnownProduct).FirstOrDefaultAsync(sp => sp.Id == stockProductId);
 
-            StockProductDetailsVm stockProductVm = ToVm(stockProduct);
+            StockProductDetailsVm stockProductVm = mapper.ToVm(stockProduct);
 
             return stockProductVm;
         }
@@ -90,24 +92,10 @@ namespace GotStuff.Services.Implementation
             dbContext.Remove(stockProductToDelete);
             await dbContext.SaveChangesAsync();
 
-            StockProductDetailsVm stockProductVm = ToVm(stockProductToDelete);
+            StockProductDetailsVm stockProductVm = mapper.ToVm(stockProductToDelete);
 
             return stockProductVm;
 
-        }
-
-
-        private StockProductDetailsVm ToVm(StockProduct stockProduct)
-        {
-            StockProductDetailsVm stockProductVm = new StockProductDetailsVm();
-            stockProductVm.StockProductDetailsId = stockProduct.Id;
-            stockProductVm.ProductId = stockProduct.KnownProductId;
-            stockProductVm.Name = stockProduct.KnownProduct.Name;
-            stockProductVm.AcquiredDate = stockProduct.AcquiredDate;
-            stockProductVm.ExpirationDate = stockProduct.ExpirationDate;
-            stockProductVm.PantryId = stockProduct.PantryId;
-
-            return stockProductVm;
         }
 
 
@@ -125,7 +113,8 @@ namespace GotStuff.Services.Implementation
             
             dbContext.StockProduct.Add(stockProduct);
             await dbContext.SaveChangesAsync();
-            StockProductDetailsVm stockVm = ToVm(stockProduct);
+
+            StockProductDetailsVm stockVm = mapper.ToVm(stockProduct);
 
             return stockVm;
         }

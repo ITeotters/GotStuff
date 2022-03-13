@@ -1,5 +1,6 @@
 ﻿using GotStuff.Data;
 using GotStuff.Models;
+using GotStuff.Services.Mappers;
 using GotStuff.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,11 +23,10 @@ namespace GotStuff.Services.Implementation
 
             foreach (KnownProduct product in knownProducts)
             {
-                KnownProductVm productsVm = new KnownProductVm();
-                productsVm.KnownProductId = product.Id;
-                productsVm.Name = product.Name;
-                productsVm.DefaultShelfLife = product.DefaultShelfLife;
-                knownProductsVm.Add(productsVm);
+                KnownProductMapper mapper = new KnownProductMapper();
+                KnownProductVm knownProduct = mapper.ToVm(product);
+               
+                knownProductsVm.Add(knownProduct);
             }
 
             return knownProductsVm;
@@ -47,10 +47,8 @@ namespace GotStuff.Services.Implementation
 
         public async Task AddNewProduct(KnownProductVm newProduct)
         {
-            KnownProduct productToAdd = new KnownProduct();
-            productToAdd.Id = newProduct.KnownProductId;
-            productToAdd.Name = newProduct.Name;
-            productToAdd.DefaultShelfLife = newProduct.DefaultShelfLife;
+            KnownProductMapper mapper = new KnownProductMapper();
+            KnownProduct productToAdd = mapper.FromVm(newProduct);
 
             dbContext.Add(productToAdd);
             await dbContext.SaveChangesAsync();
@@ -83,11 +81,8 @@ namespace GotStuff.Services.Implementation
         public async Task<KnownProductVm> GetProductVmById(int? id)
         {
             KnownProduct product = await GetProductById(id);
-            KnownProductVm knownProductVm = new KnownProductVm();
-
-            knownProductVm.KnownProductId = product.Id;
-            knownProductVm.Name = product.Name;
-            knownProductVm.DefaultShelfLife = product.DefaultShelfLife;
+            KnownProductMapper mapper = new KnownProductMapper();
+            KnownProductVm knownProductVm = mapper.ToVm(product);
 
             return knownProductVm;
         }

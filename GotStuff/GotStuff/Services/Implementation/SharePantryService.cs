@@ -23,10 +23,8 @@ namespace GotStuff.Services.Implementation
 
             foreach (var user in appUsers)
             {
-                AppUserVm userVm = new AppUserVm();
-                userVm.Id = user.Id;
-                userVm.FullName = user.FullName;
-                userVm.EmailAddress = user.Email;
+                AppUserMapper mapper = new AppUserMapper();
+                AppUserVm userVm = mapper.ToVm(user);
 
                 appUsersVm.Add(userVm);
             }
