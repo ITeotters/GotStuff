@@ -43,7 +43,12 @@ namespace GotStuff.UnitTests
         public void AppUsersNullResultsInNull()
         {
             PantryMapper mapper = new PantryMapper();
-            //TODO
+            Pantry fakePantry = CreateFakePantry();
+            fakePantry.AppUsers = null;
+
+            var result = mapper.ToVm(fakePantry);
+
+            Assert.IsNull(result.AppUsers);
         }
 
 
