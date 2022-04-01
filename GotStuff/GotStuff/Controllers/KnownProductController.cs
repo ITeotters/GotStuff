@@ -23,7 +23,15 @@ namespace GotStuff.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string searchedTerm)
         {
-            var result = await knownProductsService.GetAllSearchedKnownProduct(searchedTerm);
+            List<KnownProductVm> result = new List<KnownProductVm>();
+
+            if (string.IsNullOrEmpty(searchedTerm))
+            {
+                result = await knownProductsService.GetAllKnownProducts();
+                return View(nameof(Index), result);
+            }
+
+            result = await knownProductsService.GetAllSearchedKnownProduct(searchedTerm);
 
             return View(nameof(Index), result);
         }
