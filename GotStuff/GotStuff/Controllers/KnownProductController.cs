@@ -20,6 +20,14 @@ namespace GotStuff.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchedTerm)
+        {
+            var result = await knownProductsService.GetAllSearchedKnownProduct(searchedTerm);
+
+            return View(nameof(Index), result);
+        }
+
         public IActionResult Create()
         {
             return View();

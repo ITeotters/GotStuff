@@ -33,6 +33,23 @@ namespace GotStuff.Services.Implementation
         }
 
 
+        public async Task<List<KnownProductVm>> GetAllSearchedKnownProduct(string searchedTerm)
+        {
+            List<KnownProduct> knownProductsList = await dbContext.KnownProduct.Where(p => p.Name.Contains(searchedTerm)).ToListAsync();
+            List<KnownProductVm> knownProductsVm = new List<KnownProductVm>();
+
+            foreach (KnownProduct product in knownProductsList)
+            {
+                KnownProductMapper mapper = new KnownProductMapper();
+                KnownProductVm knownProduct = mapper.ToVm(product);
+
+                knownProductsVm.Add(knownProduct);
+            }
+
+            return knownProductsVm;
+        }
+
+
         public bool CheckIfProductExists(KnownProductVm newProduct)
         {
             var existingNameProduct = dbContext.KnownProduct

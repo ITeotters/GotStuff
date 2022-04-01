@@ -9,14 +9,20 @@
 <p>
     <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
 </p>
+
+ <form method="post">
+    <input type="text" name="searchedTerm"/>
+    <input type="submit" />
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DefaultShelfLife)
+                Default Shelf Life
             </th>
             <th></th>
         </tr>
